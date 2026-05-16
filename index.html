@@ -1,16 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="mg">
 <head>
-  <title>Parasite Zero</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PARASITE ZERO</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="menu">
-  <button onclick="startGame()">START GAME</button>
-</div>
-<canvas id="game"></canvas>
+    <div id="ui">
+        <div>PARASITE ZERO</div>
+        <div>Status: <span id="status">SURVIVOR</span></div>
+        <div>Time: <span id="timer">3:00</span></div>
+        <div>Survivors: <span id="survCount">0</span> | Infected: <span id="infCount">0</span></div>
+        <div>Room: <span id="roomCode">public</span></div>
+    </div>
 
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-<script src="script.js"></script>
+    <div id="gameOver">
+        <h1 id="winnerText">GAME OVER</h1>
+        <p id="winReason"></p>
+        <button id="playAgain">Play Again</button>
+    </div>
+
+    <div id="joystick">
+        <div id="stick"></div>
+    </div>
+
+    <canvas id="game"></canvas>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
