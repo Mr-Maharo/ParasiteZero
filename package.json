@@ -1,12 +1,27 @@
 {
-  "name": "parasite-zero",
+  "name": "parasite-zero-server",
   "version": "1.0.0",
+  "description": "Multiplayer survival horror infection game server",
   "main": "server.js",
+  "type": "commonjs",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
+  "keywords": [
+    "game",
+    "multiplayer",
+    "websocket",
+    "survival",
+    "horror"
+  ],
+  "author": "",
+  "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
-    "socket.io": "^4.7.2"
+    "socket.io": "^4.5.4"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 }
