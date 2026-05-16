@@ -7,22 +7,36 @@ app.use(express.static(__dirname));
 
 let players = {};
 
+// CONNECTION
 io.on("connection", (socket) => {
   console.log("player connected:", socket.id);
 
-  players[socket.id] = { x: 100, y: 100 };
+  // spawn player
+  players[socket.id] = {
+    x: 100,
+    y: 100,
+    hp: 100
+  };
 
+  // send all players
   io.emit("players", players);
 
+  // receive movement
   socket.on("move", (data) => {
-    players[socket.id] = data;
+    if (players[socket.id]) {
+      players[socket.id].x = data.x;
+      players[socket.id].y = data.y;
+    }
+
     io.emit("players", players);
   });
 
+  // disconnect
   socket.on("disconnect", () => {
     delete players[socket.id];
     io.emit("players", players);
   });
 });
 
-http.listen(3000, () => console.log("server running"));
+const PORT = process.env.PORT || 3000;
+http.listen(PORT, () => console.log("server running on " + PORT));
