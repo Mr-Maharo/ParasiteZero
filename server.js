@@ -7,31 +7,31 @@ app.use(express.static(__dirname));
 
 let players = {};
 
-// CONNECTION
 io.on("connection", (socket) => {
-  console.log("player connected:", socket.id);
-
-  // spawn player
   players[socket.id] = {
     x: 100,
     y: 100,
-    hp: 100
+    infected: false
   };
 
-  // send all players
   io.emit("players", players);
 
-  // receive movement
   socket.on("move", (data) => {
-    if (players[socket.id]) {
-      players[socket.id].x = data.x;
-      players[socket.id].y = data.y;
-    }
+    if (!players[socket.id]) return;
+
+    players[socket.id].x = data.x;
+    players[socket.id].y = data.y;
 
     io.emit("players", players);
   });
 
-  // disconnect
+  socket.on("infect", (targetId) => {
+    if (players[targetId]) {
+      players[targetId].infected = true;
+    }
+    io.emit("players", players);
+  });
+
   socket.on("disconnect", () => {
     delete players[socket.id];
     io.emit("players", players);
@@ -39,4 +39,4 @@ io.on("connection", (socket) => {
 });
 
 const PORT = process.env.PORT || 3000;
-http.listen(PORT, () => console.log("server running on " + PORT));
+http.listen(PORT, () => console.log("server running"));
