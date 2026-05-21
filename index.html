@@ -1,13 +1,2371 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PARASITE ZERO</title>
-    <link rel="stylesheet" href="style.css">
+    <title>NEO GAME ENGINE STUDIO ULTRA V1</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ny-karazana-lalao: #00ff88;
+            --ny-lahiry: #ff006e;
+            --ny-loko-afo: #ffaa00;
+            --ny-loko-fonon: #0a0e27;
+            --ny-loko-panela: #1a1f3a;
+            --ny-loko-soratra-voalohany: #e0e6ff;
+            --ny-loko-soratra-faharoa: #a0a8ff;
+            --ny-soratra-bingana: #2d3a5c;
+            --ny-soratra-andeha: #252d45;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background-color: var(--ny-loko-fonon);
+            color: var(--ny-loko-soratra-voalohany);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .fitaovana-afovoany {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+        }
+
+        .barra-lalao-ambony {
+            background: linear-gradient(135deg, var(--ny-loko-panela) 0%, #1a2840 100%);
+            border-bottom: 2px solid var(--ny-karazana-lalao);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.15);
+            z-index: 1000;
+            height: 60px;
+        }
+
+        .lokon-lalao {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--ny-karazana-lalao);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .fisafidiana-fomba-lalao {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .botatry-fomba {
+            background: var(--ny-loko-panela);
+            border: 1px solid var(--ny-soratra-bingana);
+            color: var(--ny-loko-soratra-faharoa);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .botatry-fomba.mavitrika {
+            background: var(--ny-karazana-lalao);
+            color: var(--ny-loko-fonon);
+            border-color: var(--ny-karazana-lalao);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+        }
+
+        .botatry-fomba:hover {
+            border-color: var(--ny-karazana-lalao);
+        }
+
+        .botatry-nahahafahy {
+            background: linear-gradient(135deg, var(--ny-karazana-lalao) 0%, #00cc6e 100%);
+            border: none;
+            color: var(--ny-loko-fonon);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 10px;
+        }
+
+        .botatry-nahahafahy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .niava-lalao {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            gap: 1px;
+            background: var(--ny-soratra-bingana);
+        }
+
+        .panela-miankavia-lalao {
+            width: 200px;
+            background: var(--ny-loko-panela);
+            border-right: 1px solid var(--ny-soratra-bingana);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tab-anisana-panela {
+            display: flex;
+            background: var(--ny-loko-fonon);
+            border-bottom: 1px solid var(--ny-soratra-bingana);
+        }
+
+        .botatry-tab-panela {
+            flex: 1;
+            padding: 10px;
+            background: var(--ny-loko-fonon);
+            border: none;
+            color: var(--ny-loko-soratra-faharoa);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .botatry-tab-panela.mavitrika {
+            background: var(--ny-loko-panela);
+            color: var(--ny-karazana-lalao);
+            border-bottom-color: var(--ny-karazana-lalao);
+        }
+
+        .botatry-tab-panela:hover {
+            color: var(--ny-loko-soratra-voalohany);
+        }
+
+        .niava-tab-panela {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .singa-lisy {
+            background: var(--ny-loko-fonon);
+            border: 1px solid var(--ny-soratra-bingana);
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            cursor: grab;
+            transition: all 0.2s;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--ny-loko-soratra-faharoa);
+        }
+
+        .singa-lisy:hover {
+            background: var(--ny-soratra-andeha);
+            border-color: var(--ny-karazana-lalao);
+            color: var(--ny-loko-soratra-voalohany);
+            transform: translateX(2px);
+        }
+
+        .singa-lisy:active {
+            cursor: grabbing;
+        }
+
+        .panela-afovoany-lalao {
+            flex: 1;
+            background: var(--ny-loko-fonon);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tabs-saa-na-mihoatra {
+            display: flex;
+            background: var(--ny-loko-panela);
+            border-bottom: 1px solid var(--ny-soratra-bingana);
+            padding: 5px;
+            gap: 5px;
+        }
+
+        .botatry-tab-saa {
+            background: var(--ny-loko-fonon);
+            border: 1px solid var(--ny-soratra-bingana);
+            color: var(--ny-loko-soratra-faharoa);
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .botatry-tab-saa.mavitrika {
+            background: var(--ny-karazana-lalao);
+            color: var(--ny-loko-fonon);
+            border-color: var(--ny-karazana-lalao);
+        }
+
+        .botatry-tab-saa:hover {
+            border-color: var(--ny-karazana-lalao);
+        }
+
+        .niava-lalao-saa {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+
+        .canvas-lalao-2d {
+            width: 100%;
+            height: 100%;
+            background: #1a1a1a;
+            display: block;
+        }
+
+        .container-lalao-3d {
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+
+        .panela-havanana-lalao {
+            width: 250px;
+            background: var(--ny-loko-panela);
+            border-left: 1px solid var(--ny-soratra-bingana);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tab-anisana-panela-havanana {
+            display: flex;
+            background: var(--ny-loko-fonon);
+            border-bottom: 1px solid var(--ny-soratra-bingana);
+        }
+
+        .botatry-tab-havanana {
+            flex: 1;
+            padding: 10px;
+            background: var(--ny-loko-fonon);
+            border: none;
+            color: var(--ny-loko-soratra-faharoa);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .botatry-tab-havanana.mavitrika {
+            background: var(--ny-loko-panela);
+            color: var(--ny-karazana-lalao);
+            border-bottom-color: var(--ny-karazana-lalao);
+        }
+
+        .niava-tab-havanana {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .filan-fananana {
+            margin-bottom: 15px;
+        }
+
+        .lebel-fananana {
+            font-size: 10px;
+            color: var(--ny-loko-soratra-faharoa);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .singa-famintinana {
+            width: 100%;
+            background: var(--ny-loko-fonon);
+            border: 1px solid var(--ny-soratra-bingana);
+            color: var(--ny-loko-soratra-voalohany);
+            padding: 6px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-bottom: 6px;
+        }
+
+        .singa-famintinana:focus {
+            outline: none;
+            border-color: var(--ny-karazana-lalao);
+            box-shadow: 0 0 8px rgba(0, 255, 136, 0.2);
+        }
+
+        .panela-ambany-lalao {
+            height: 180px;
+            background: var(--ny-loko-panela);
+            border-top: 2px solid var(--ny-soratra-bingana);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tab-ambany-lalao {
+            display: flex;
+            border-bottom: 1px solid var(--ny-soratra-bingana);
+            background: var(--ny-loko-fonon);
+        }
+
+        .botatry-tab-ambany {
+            flex: 1;
+            padding: 8px;
+            background: var(--ny-loko-fonon);
+            border: none;
+            color: var(--ny-loko-soratra-faharoa);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .botatry-tab-ambany.mavitrika {
+            background: var(--ny-loko-panela);
+            color: var(--ny-karazana-lalao);
+            border-bottom-color: var(--ny-karazana-lalao);
+        }
+
+        .botatry-tab-ambany:hover {
+            color: var(--ny-loko-soratra-voalohany);
+        }
+
+        .niava-tab-ambany {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .mpampokitika-koditra {
+            background: var(--ny-loko-fonon);
+            color: var(--ny-karazana-lalao);
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .fampahalalana-isika {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--ny-karazana-lalao);
+            color: var(--ny-loko-fonon);
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            animation: fampialana 0.3s ease;
+            z-index: 10000;
+            max-width: 300px;
+        }
+
+        .fampahalalana-isika.diso {
+            background: var(--ny-lahiry);
+        }
+
+        .fampahalalana-isika.fampitandremana {
+            background: var(--ny-loko-afo);
+        }
+
+        @keyframes fampialana {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .dialog-tampoka {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 14, 39, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+        }
+
+        .dialog-akatona {
+            background: var(--ny-loko-panela);
+            border: 2px solid var(--ny-karazana-lalao);
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .dialog-lohateny {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--ny-karazana-lalao);
+            margin-bottom: 15px;
+        }
+
+        .dialog-niava {
+            color: var(--ny-loko-soratra-faharoa);
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .dialog-hetsika {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .dialog-botatry {
+            background: linear-gradient(135deg, var(--ny-karazana-lalao) 0%, #00cc6e 100%);
+            border: none;
+            color: var(--ny-loko-fonon);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 12px;
+        }
+
+        .dialog-botatry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .dialog-botatry-fanafoana {
+            background: var(--ny-loko-fonon);
+            color: var(--ny-loko-soratra-voalohany);
+            border: 1px solid var(--ny-soratra-bingana);
+        }
+
+        .dialog-botatry-fanafoana:hover {
+            border-color: var(--ny-karazana-lalao);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .scrollbar-mifana-loha {
+            scrollbar-width: thin;
+            scrollbar-color: var(--ny-soratra-bingana) transparent;
+        }
+
+        .scrollbar-mifana-loha::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .scrollbar-mifana-loha::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .scrollbar-mifana-loha::-webkit-scrollbar-thumb {
+            background: var(--ny-soratra-bingana);
+            border-radius: 3px;
+        }
+
+        .scrollbar-mifana-loha::-webkit-scrollbar-thumb:hover {
+            background: var(--ny-karazana-lalao);
+        }
+
+        .panela-miankavia-lalao,
+        .panela-havanana-lalao,
+        .niava-tab-panela,
+        .niava-tab-havanana,
+        .niava-tab-ambany {
+            scrollbar-width: thin;
+            scrollbar-color: var(--ny-soratra-bingana) transparent;
+        }
+
+        .panela-miankavia-lalao::-webkit-scrollbar,
+        .panela-havanana-lalao::-webkit-scrollbar,
+        .niava-tab-panela::-webkit-scrollbar,
+        .niava-tab-havanana::-webkit-scrollbar,
+        .niava-tab-ambany::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panela-miankavia-lalao::-webkit-scrollbar-track,
+        .panela-havanana-lalao::-webkit-scrollbar-track,
+        .niava-tab-panela::-webkit-scrollbar-track,
+        .niava-tab-havanana::-webkit-scrollbar-track,
+        .niava-tab-ambany::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .panela-miankavia-lalao::-webkit-scrollbar-thumb,
+        .panela-havanana-lalao::-webkit-scrollbar-thumb,
+        .niava-tab-panela::-webkit-scrollbar-thumb,
+        .niava-tab-havanana::-webkit-scrollbar-thumb,
+        .niava-tab-ambany::-webkit-scrollbar-thumb {
+            background: var(--ny-soratra-bingana);
+            border-radius: 3px;
+        }
+
+        .panela-miankavia-lalao::-webkit-scrollbar-thumb:hover,
+        .panela-havanana-lalao::-webkit-scrollbar-thumb:hover,
+        .niava-tab-panela::-webkit-scrollbar-thumb:hover,
+        .niava-tab-havanana::-webkit-scrollbar-thumb:hover,
+        .niava-tab-ambany::-webkit-scrollbar-thumb:hover {
+            background: var(--ny-karazana-lalao);
+        }
+
+        .fomba-fanolorana-lokon {
+            width: 100%;
+            height: 30px;
+            border-radius: 4px;
+            border: 1px solid var(--ny-soratra-bingana);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .fomba-fanolorana-lokon:hover {
+            border-color: var(--ny-karazana-lalao);
+        }
+
+        .takelaka-hierarkiana {
+            font-size: 11px;
+        }
+
+        .ranga-takelaka {
+            padding: 6px 8px;
+            border: 1px solid var(--ny-soratra-bingana);
+            margin-bottom: 4px;
+            border-radius: 4px;
+            background: var(--ny-loko-fonon);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--ny-loko-soratra-faharoa);
+        }
+
+        .ranga-takelaka:hover {
+            background: var(--ny-soratra-andeha);
+            border-color: var(--ny-karazana-lalao);
+        }
+
+        .ranga-takelaka.voafidy {
+            background: var(--ny-karazana-lalao);
+            color: var(--ny-loko-fonon);
+            border-color: var(--ny-karazana-lalao);
+        }
+
+        .takelaka-mampiova {
+            margin-left: 10px;
+        }
+
+        .haingon-singa-sany {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .takelaka-sary {
+            font-size: 14px;
+        }
+
+        .gizmo-sora-loko {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--ny-karazana-lalao);
+            border: 1px solid var(--ny-loko-soratra-voalohany);
+            border-radius: 50%;
+            cursor: move;
+            z-index: 100;
+        }
+
+        .grid-lalao {
+            background-image: 
+                linear-gradient(0deg, transparent 24%, rgba(0, 255, 136, 0.05) 25%, rgba(0, 255, 136, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 136, 0.05) 75%, rgba(0, 255, 136, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(0, 255, 136, 0.05) 25%, rgba(0, 255, 136, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 136, 0.05) 75%, rgba(0, 255, 136, 0.05) 76%, transparent 77%, transparent);
+            background-size: 20px 20px;
+        }
+
+        .object-saa {
+            position: absolute;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid var(--ny-karazana-lalao);
+            border-radius: 4px;
+            cursor: move;
+            transition: all 0.1s;
+        }
+
+        .object-saa.voafidy {
+            border: 2px solid var(--ny-karazana-lalao);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5), inset 0 0 5px rgba(0, 255, 136, 0.3);
+        }
+
+        .object-saa:hover {
+            box-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
+        }
+    </style>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
-    <script src="script.js"></script>
+    <div class="fitaovana-afovoany">
+        <!-- BARRA AMBONY -->
+        <div class="barra-lalao-ambony">
+            <div class="lokon-lalao">⚡ NEO ENGINE ULTRA V1</div>
+            <div class="fisafidiana-fomba-lalao">
+                <button class="botatry-fomba mavitrika" data-fomba="2d">🎮 2D ENGINE</button>
+                <button class="botatry-fomba" data-fomba="3d">🎯 3D ENGINE</button>
+                <button class="botatry-fomba" data-fomba="script">📝 SCRIPT</button>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button class="botatry-nahahafahy" id="playBtn">▶️ MANARAKA</button>
+                <button class="botatry-nahahafahy" id="saveBtn" style="background: var(--ny-loko-afo);">💾 SAFIDY</button>
+                <button class="botatry-nahahafahy" id="loadBtn" style="background: #0066cc;">📂 KAROAKA</button>
+            </div>
+        </div>
+
+        <!-- NIAVA AFOVOANY -->
+        <div class="niava-lalao">
+            <!-- PANELA MIANKAVIA - COMPONENTS -->
+            <div class="panela-miankavia-lalao scrollbar-mifana-loha">
+                <div class="tab-anisana-panela">
+                    <button class="botatry-tab-panela mavitrika" data-tab="componera">📦 Singa</button>
+                    <button class="botatry-tab-panela" data-tab="asa">🎨 Asa</button>
+                </div>
+                <div class="niava-tab-panela" id="tabCompera">
+                    <div class="lohateny-panela-small">📦 SINGA 2D</div>
+                    <div class="singa-lisy" draggable="true" data-singa="sprite">🖼️ Sprite</div>
+                    <div class="singa-lisy" draggable="true" data-singa="rectangle">▭ Rectangle</div>
+                    <div class="singa-lisy" draggable="true" data-singa="circle">● Circle</div>
+                    <div class="singa-lisy" draggable="true" data-singa="text">📝 Text</div>
+                    <div class="singa-lisy" draggable="true" data-singa="button">🔘 Button</div>
+                    <div class="singa-lisy" draggable="true" data-singa="player">🧙 Player</div>
+                    <div class="singa-lisy" draggable="true" data-singa="enemy">👹 Enemy</div>
+                    <div class="singa-lisy" draggable="true" data-singa="tilemap">🗺️ Tilemap</div>
+
+                    <div class="lohateny-panela-small" style="margin-top: 15px;">📦 SINGA 3D</div>
+                    <div class="singa-lisy" draggable="true" data-singa="cube">📦 Cube</div>
+                    <div class="singa-lisy" draggable="true" data-singa="sphere">🔮 Sphere</div>
+                    <div class="singa-lisy" draggable="true" data-singa="plane">📐 Plane</div>
+                    <div class="singa-lisy" draggable="true" data-singa="terrain">🗻 Terrain</div>
+                    <div class="singa-lisy" draggable="true" data-singa="light">💡 Light</div>
+                    <div class="singa-lisy" draggable="true" data-singa="camera">📷 Camera</div>
+                </div>
+                <div class="niava-tab-panela hidden" id="tabAsa">
+                    <div class="lohateny-panela-small">🎯 HETSIKA RÔLÔ</div>
+                    <div class="singa-lisy" data-hetsika="move">➡️ Move</div>
+                    <div class="singa-lisy" data-hetsika="rotate">🔄 Rotate</div>
+                    <div class="singa-lisy" data-hetsika="scale">📏 Scale</div>
+                    <div class="singa-lisy" data-hetsika="color">🎨 Color</div>
+                    <div class="singa-lisy" data-hetsika="destroy">💥 Destroy</div>
+                </div>
+            </div>
+
+            <!-- PANELA AFOVOANY - SCENE EDITOR -->
+            <div class="panela-afovoany-lalao">
+                <div class="tabs-saa-na-mihoatra">
+                    <button class="botatry-tab-saa mavitrika" data-tab-saa="scene">🎬 Scene</button>
+                    <button class="botatry-tab-saa" data-tab-saa="play">▶️ Play</button>
+                    <button class="botatry-tab-saa" data-tab-saa="console">🖥️ Console</button>
+                </div>
+                <div class="niava-lalao-saa" id="tabSaa">
+                    <canvas id="canvasLalao2d" class="canvas-lalao-2d"></canvas>
+                    <div id="containerLalao3d" class="container-lalao-3d hidden"></div>
+                </div>
+                <div class="niava-lalao-saa hidden" id="tabPlay">
+                    <canvas id="canvasPlayMode" class="canvas-lalao-2d"></canvas>
+                </div>
+                <div class="niava-lalao-saa hidden" id="tabConsole" style="background: var(--ny-loko-fonon); font-family: monospace; font-size: 11px; overflow-y: auto;">
+                </div>
+            </div>
+
+            <!-- PANELA HAVANANA - INSPECTOR -->
+            <div class="panela-havanana-lalao scrollbar-mifana-loha">
+                <div class="tab-anisana-panela-havanana">
+                    <button class="botatry-tab-havanana mavitrika" data-tab-insp="inspector">🔍 Inspector</button>
+                    <button class="botatry-tab-havanana" data-tab-insp="takelaka">📋 Takelaka</button>
+                </div>
+                <div class="niava-tab-havanana" id="tabInspector">
+                    <div id="inspectorPanel">
+                        <p style="color: var(--ny-loko-soratra-faharoa); font-size: 12px; padding: 10px;">Fisafidy zavatra amin'ny saa</p>
+                    </div>
+                </div>
+                <div class="niava-tab-havanana hidden" id="tabTakelaka">
+                    <div id="hierarchyPanel" class="takelaka-hierarkiana">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANELA AMBANY - CODE EDITOR -->
+        <div class="panela-ambany-lalao">
+            <div class="tab-ambany-lalao">
+                <button class="botatry-tab-ambany mavitrika" data-tab-koditra="code">💻 Koditra</button>
+                <button class="botatry-tab-ambany" data-tab-koditra="laka">🔀 Laka</button>
+                <button class="botatry-tab-ambany" data-tab-koditra="debug">🐛 Debug</button>
+            </div>
+            <div class="niava-tab-ambany" id="tabKoditra">
+                <div id="codeEditor" class="mpampokitika-koditra"></div>
+            </div>
+            <div class="niava-tab-ambany hidden" id="tabLaka">
+                <div id="logicEditor" style="font-size: 12px; color: var(--ny-loko-soratra-faharoa);"></div>
+            </div>
+            <div class="niava-tab-ambany hidden" id="tabDebug">
+                <div id="debugConsole" style="font-size: 11px; font-family: monospace; color: var(--ny-karazana-lalao);"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DIALOGS -->
+    <div id="saveDialog" class="dialog-tampoka hidden">
+        <div class="dialog-akatona">
+            <div class="dialog-lohateny">💾 Safidy Tetika</div>
+            <div class="dialog-niava">
+                <label class="lebel-fananana">Anarana tetika:</label>
+                <input type="text" id="saveName" class="singa-famintinana" value="Tetika Tsy Fantatra" style="margin-top: 8px;">
+            </div>
+            <div class="dialog-hetsika">
+                <button class="dialog-botatry-fanafoana" onclick="closeSaveDialog()">Fanafoana</button>
+                <button class="dialog-botatry" onclick="saveProject()">Safidy</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loadDialog" class="dialog-tampoka hidden">
+        <div class="dialog-akatona">
+            <div class="dialog-lohateny">📂 Karoaka Tetika</div>
+            <div class="dialog-niava" id="savedProjectsList">
+                <p style="color: var(--ny-loko-soratra-faharoa);">Tsy misy tetika nafidy</p>
+            </div>
+            <div class="dialog-hetsika">
+                <button class="dialog-botatry-fanafoana" onclick="closeLoadDialog()">Fanafoana</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // TETIKA FOTOTRA - CORE GAME ENGINE
+        // ============================================================================
+
+        class GameObject {
+            constructor(name, x = 0, y = 0) {
+                this.id = 'obj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                this.name = name;
+                this.x = x;
+                this.y = y;
+                this.z = 0;
+                this.rotationX = 0;
+                this.rotationY = 0;
+                this.rotationZ = 0;
+                this.scaleX = 1;
+                this.scaleY = 1;
+                this.scaleZ = 1;
+                this.width = 32;
+                this.height = 32;
+                this.color = '#00ff88';
+                this.active = true;
+                this.visible = true;
+                this.components = [];
+                this.children = [];
+                this.parent = null;
+                this.velocityX = 0;
+                this.velocityY = 0;
+                this.velocityZ = 0;
+                this.accelerationX = 0;
+                this.accelerationY = 0;
+                this.accelerationZ = 0;
+                this.mass = 1;
+                this.friction = 0.1;
+                this.bounce = 0;
+                this.gravity = true;
+                this.type = 'GameObject';
+                this.tags = [];
+                this.layer = 0;
+                this.zIndex = 0;
+                this.userData = {};
+            }
+
+            addComponent(component) {
+                component.gameObject = this;
+                this.components.push(component);
+            }
+
+            getComponent(componentType) {
+                return this.components.find(c => c instanceof componentType);
+            }
+
+            getAllComponents(componentType) {
+                return this.components.filter(c => c instanceof componentType);
+            }
+
+            removeComponent(component) {
+                const idx = this.components.indexOf(component);
+                if (idx > -1) this.components.splice(idx, 1);
+            }
+
+            addChild(gameObject) {
+                gameObject.parent = this;
+                this.children.push(gameObject);
+            }
+
+            removeChild(gameObject) {
+                const idx = this.children.indexOf(gameObject);
+                if (idx > -1) this.children.splice(idx, 1);
+            }
+
+            update(deltaTime) {
+                for (let component of this.components) {
+                    if (component.update) component.update(deltaTime);
+                }
+
+                for (let child of this.children) {
+                    child.update(deltaTime);
+                }
+            }
+
+            render(ctx) {
+                if (!this.visible) return;
+
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotationZ);
+                ctx.scale(this.scaleX, this.scaleY);
+
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(-this.width / 2, -this.height / 2, this.width, this.height);
+
+                ctx.restore();
+
+                for (let child of this.children) {
+                    child.render(ctx);
+                }
+            }
+
+            serialize() {
+                return {
+                    id: this.id,
+                    name: this.name,
+                    type: this.type,
+                    x: this.x,
+                    y: this.y,
+                    z: this.z,
+                    rotationX: this.rotationX,
+                    rotationY: this.rotationY,
+                    rotationZ: this.rotationZ,
+                    scaleX: this.scaleX,
+                    scaleY: this.scaleY,
+                    scaleZ: this.scaleZ,
+                    width: this.width,
+                    height: this.height,
+                    color: this.color,
+                    layer: this.layer,
+                    tags: this.tags,
+                    userData: this.userData
+                };
+            }
+        }
+
+        class Transform {
+            constructor() {
+                this.gameObject = null;
+            }
+
+            getLocalPosition() {
+                return { x: this.gameObject.x, y: this.gameObject.y, z: this.gameObject.z };
+            }
+
+            setLocalPosition(x, y, z = 0) {
+                this.gameObject.x = x;
+                this.gameObject.y = y;
+                this.gameObject.z = z;
+            }
+
+            getWorldPosition() {
+                if (!this.gameObject.parent) {
+                    return this.getLocalPosition();
+                }
+                const parentPos = this.gameObject.parent.transform.getWorldPosition();
+                return {
+                    x: parentPos.x + this.gameObject.x,
+                    y: parentPos.y + this.gameObject.y,
+                    z: parentPos.z + this.gameObject.z
+                };
+            }
+
+            getLocalRotation() {
+                return {
+                    x: this.gameObject.rotationX,
+                    y: this.gameObject.rotationY,
+                    z: this.gameObject.rotationZ
+                };
+            }
+
+            setLocalRotation(x, y, z) {
+                this.gameObject.rotationX = x;
+                this.gameObject.rotationY = y;
+                this.gameObject.rotationZ = z;
+            }
+
+            getLocalScale() {
+                return {
+                    x: this.gameObject.scaleX,
+                    y: this.gameObject.scaleY,
+                    z: this.gameObject.scaleZ
+                };
+            }
+
+            setLocalScale(x, y, z = 1) {
+                this.gameObject.scaleX = x;
+                this.gameObject.scaleY = y;
+                this.gameObject.scaleZ = z;
+            }
+
+            translate(x, y, z = 0) {
+                this.gameObject.x += x;
+                this.gameObject.y += y;
+                this.gameObject.z += z;
+            }
+
+            rotate(x, y, z) {
+                this.gameObject.rotationX += x;
+                this.gameObject.rotationY += y;
+                this.gameObject.rotationZ += z;
+            }
+
+            scale(x, y, z = 1) {
+                this.gameObject.scaleX *= x;
+                this.gameObject.scaleY *= y;
+                this.gameObject.scaleZ *= z;
+            }
+        }
+
+        class Rigidbody {
+            constructor(mass = 1, gravity = true) {
+                this.gameObject = null;
+                this.mass = mass;
+                this.gravity = gravity;
+                this.velocityX = 0;
+                this.velocityY = 0;
+                this.velocityZ = 0;
+                this.accelerationX = 0;
+                this.accelerationY = 0;
+                this.accelerationZ = 0;
+                this.friction = 0.1;
+                this.bounce = 0.5;
+                this.constraints = { lockX: false, lockY: false, lockZ: false };
+            }
+
+            applyForce(x, y, z = 0) {
+                this.accelerationX += x / this.mass;
+                this.accelerationY += y / this.mass;
+                this.accelerationZ += z / this.mass;
+            }
+
+            applyVelocity(x, y, z = 0) {
+                this.velocityX = x;
+                this.velocityY = y;
+                this.velocityZ = z;
+            }
+
+            update(deltaTime, gravityAccel = 9.8) {
+                if (this.gravity) {
+                    this.accelerationY += gravityAccel;
+                }
+
+                this.velocityX += this.accelerationX * deltaTime;
+                this.velocityY += this.accelerationY * deltaTime;
+                this.velocityZ += this.accelerationZ * deltaTime;
+
+                this.velocityX *= (1 - this.friction);
+                this.velocityY *= (1 - this.friction);
+
+                if (!this.constraints.lockX) this.gameObject.x += this.velocityX * deltaTime;
+                if (!this.constraints.lockY) this.gameObject.y += this.velocityY * deltaTime;
+                if (!this.constraints.lockZ) this.gameObject.z += this.velocityZ * deltaTime;
+
+                this.accelerationX = 0;
+                this.accelerationY = 0;
+                this.accelerationZ = 0;
+            }
+        }
+
+        class Collider {
+            constructor(width = 32, height = 32) {
+                this.gameObject = null;
+                this.width = width;
+                this.height = height;
+                this.offsetX = 0;
+                this.offsetY = 0;
+                this.isTrigger = false;
+            }
+
+            getWorldBounds() {
+                return {
+                    x: this.gameObject.x + this.offsetX - this.width / 2,
+                    y: this.gameObject.y + this.offsetY - this.height / 2,
+                    width: this.width,
+                    height: this.height
+                };
+            }
+
+            isCollidingWith(other) {
+                const a = this.getWorldBounds();
+                const b = other.getWorldBounds();
+                return a.x < b.x + b.width && a.x + a.width > b.x &&
+                       a.y < b.y + b.height && a.y + a.height > b.y;
+            }
+
+            getOverlapAxis(other) {
+                const a = this.getWorldBounds();
+                const b = other.getWorldBounds();
+
+                const dx = (a.x + a.width / 2) - (b.x + b.width / 2);
+                const dy = (a.y + a.height / 2) - (b.y + b.height / 2);
+
+                const overlapX = (a.width + b.width) / 2 - Math.abs(dx);
+                const overlapY = (a.height + b.height) / 2 - Math.abs(dy);
+
+                return { dx, dy, overlapX, overlapY };
+            }
+        }
+
+        class Sprite {
+            constructor(imageUrl = '') {
+                this.gameObject = null;
+                this.imageUrl = imageUrl;
+                this.image = null;
+                this.frameIndex = 0;
+                this.frameCount = 1;
+                this.frameWidth = 32;
+                this.frameHeight = 32;
+                this.animationSpeed = 10;
+                this.isAnimating = false;
+                this.loopAnimation = true;
+            }
+
+            loadImage(url) {
+                this.imageUrl = url;
+                this.image = new Image();
+                this.image.src = url;
+            }
+
+            playAnimation(frameCount, speed = 10, loop = true) {
+                this.frameCount = frameCount;
+                this.animationSpeed = speed;
+                this.isAnimating = true;
+                this.loopAnimation = loop;
+                this.frameIndex = 0;
+            }
+
+            stopAnimation() {
+                this.isAnimating = false;
+            }
+
+            update(deltaTime) {
+                if (!this.isAnimating) return;
+
+                this.frameIndex += this.animationSpeed * deltaTime;
+
+                if (this.frameIndex >= this.frameCount) {
+                    if (this.loopAnimation) {
+                        this.frameIndex -= this.frameCount;
+                    } else {
+                        this.frameIndex = this.frameCount - 1;
+                        this.isAnimating = false;
+                    }
+                }
+            }
+        }
+
+        class Physics {
+            constructor() {
+                this.objects = [];
+                this.gravity = 9.8;
+                this.iterationCount = 5;
+            }
+
+            addObject(obj) {
+                if (obj.components.find(c => c instanceof Rigidbody)) {
+                    this.objects.push(obj);
+                }
+            }
+
+            removeObject(obj) {
+                const idx = this.objects.indexOf(obj);
+                if (idx > -1) this.objects.splice(idx, 1);
+            }
+
+            update(deltaTime) {
+                for (let obj of this.objects) {
+                    const rb = obj.getComponent(Rigidbody);
+                    if (rb) rb.update(deltaTime, this.gravity);
+                }
+
+                // Collision detection
+                for (let i = 0; i < this.objects.length; i++) {
+                    for (let j = i + 1; j < this.objects.length; j++) {
+                        const objA = this.objects[i];
+                        const objB = this.objects[j];
+
+                        const colliderA = objA.getComponent(Collider);
+                        const colliderB = objB.getComponent(Collider);
+
+                        if (colliderA && colliderB) {
+                            if (colliderA.isCollidingWith(colliderB)) {
+                                if (colliderA.isTrigger || colliderB.isTrigger) {
+                                    // Trigger event
+                                    eventSystem.emit('OnTrigger', { objA, objB });
+                                } else {
+                                    // Resolve collision
+                                    this.resolveCollision(objA, objB, colliderA, colliderB);
+                                    eventSystem.emit('OnCollision', { objA, objB });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            resolveCollision(objA, objB, colliderA, colliderB) {
+                const rbA = objA.getComponent(Rigidbody);
+                const rbB = objB.getComponent(Rigidbody);
+                if (!rbA || !rbB) return;
+
+                const axis = colliderA.getOverlapAxis(colliderB);
+                const overlap = Math.min(axis.overlapX, axis.overlapY);
+
+                if (axis.overlapX < axis.overlapY) {
+                    // Separate on X axis
+                    if (axis.dx > 0) {
+                        objA.x += overlap;
+                        objB.x -= overlap;
+                    } else {
+                        objA.x -= overlap;
+                        objB.x += overlap;
+                    }
+                    rbA.velocityX *= -rbA.bounce;
+                    rbB.velocityX *= -rbB.bounce;
+                } else {
+                    // Separate on Y axis
+                    if (axis.dy > 0) {
+                        objA.y += overlap;
+                        objB.y -= overlap;
+                    } else {
+                        objA.y -= overlap;
+                        objB.y += overlap;
+                    }
+                    rbA.velocityY *= -rbA.bounce;
+                    rbB.velocityY *= -rbB.bounce;
+                }
+            }
+        }
+
+        class EventSystem {
+            constructor() {
+                this.events = {};
+                this.listeners = {};
+            }
+
+            on(eventName, callback) {
+                if (!this.listeners[eventName]) {
+                    this.listeners[eventName] = [];
+                }
+                this.listeners[eventName].push(callback);
+            }
+
+            off(eventName, callback) {
+                if (!this.listeners[eventName]) return;
+                const idx = this.listeners[eventName].indexOf(callback);
+                if (idx > -1) this.listeners[eventName].splice(idx, 1);
+            }
+
+            emit(eventName, data) {
+                if (!this.listeners[eventName]) return;
+                for (let callback of this.listeners[eventName]) {
+                    callback(data);
+                }
+            }
+
+            clear() {
+                this.listeners = {};
+            }
+        }
+
+        class InputManager {
+            constructor() {
+                this.keysPressed = {};
+                this.keysDown = {};
+                this.keysUp = {};
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.mouseDown = false;
+                this.touches = [];
+
+                window.addEventListener('keydown', (e) => {
+                    const key = e.key.toLowerCase();
+                    if (!this.keysPressed[key]) {
+                        this.keysDown[key] = true;
+                    }
+                    this.keysPressed[key] = true;
+                });
+
+                window.addEventListener('keyup', (e) => {
+                    const key = e.key.toLowerCase();
+                    this.keysUp[key] = true;
+                    this.keysPressed[key] = false;
+                });
+
+                window.addEventListener('mousemove', (e) => {
+                    this.mouseX = e.clientX;
+                    this.mouseY = e.clientY;
+                });
+
+                window.addEventListener('mousedown', (e) => {
+                    this.mouseDown = true;
+                });
+
+                window.addEventListener('mouseup', (e) => {
+                    this.mouseDown = false;
+                });
+
+                window.addEventListener('touchstart', (e) => {
+                    this.touches = e.touches;
+                });
+
+                window.addEventListener('touchmove', (e) => {
+                    this.touches = e.touches;
+                });
+
+                window.addEventListener('touchend', (e) => {
+                    this.touches = e.touches;
+                });
+            }
+
+            isKeyPressed(key) {
+                return this.keysPressed[key.toLowerCase()] || false;
+            }
+
+            isKeyDown(key) {
+                const k = key.toLowerCase();
+                const result = this.keysDown[k] || false;
+                this.keysDown[k] = false;
+                return result;
+            }
+
+            isKeyUp(key) {
+                const k = key.toLowerCase();
+                const result = this.keysUp[k] || false;
+                this.keysUp[k] = false;
+                return result;
+            }
+
+            getMousePosition() {
+                return { x: this.mouseX, y: this.mouseY };
+            }
+
+            isMouseDown() {
+                return this.mouseDown;
+            }
+
+            getTouches() {
+                return this.touches;
+            }
+
+            update() {
+                // Clear frame-based keys
+            }
+        }
+
+        class Camera {
+            constructor(width = 800, height = 600) {
+                this.x = 0;
+                this.y = 0;
+                this.z = 0;
+                this.width = width;
+                this.height = height;
+                this.zoomX = 1;
+                this.zoomY = 1;
+                this.rotationZ = 0;
+                this.target = null;
+                this.followSmooth = 0.1;
+                this.shakeIntensity = 0;
+                this.shakeTime = 0;
+            }
+
+            update(deltaTime) {
+                if (this.target) {
+                    this.x += (this.target.x - this.x) * this.followSmooth;
+                    this.y += (this.target.y - this.y) * this.followSmooth;
+                }
+
+                if (this.shakeTime > 0) {
+                    this.x += (Math.random() - 0.5) * this.shakeIntensity;
+                    this.y += (Math.random() - 0.5) * this.shakeIntensity;
+                    this.shakeTime -= deltaTime;
+                }
+            }
+
+            shake(intensity = 5, duration = 0.3) {
+                this.shakeIntensity = intensity;
+                this.shakeTime = duration;
+            }
+
+            worldToScreenX(worldX) {
+                return (worldX - this.x) * this.zoomX + this.width / 2;
+            }
+
+            worldToScreenY(worldY) {
+                return (worldY - this.y) * this.zoomY + this.height / 2;
+            }
+
+            screenToWorldX(screenX) {
+                return (screenX - this.width / 2) / this.zoomX + this.x;
+            }
+
+            screenToWorldY(screenY) {
+                return (screenY - this.height / 2) / this.zoomY + this.y;
+            }
+
+            zoom(amount) {
+                this.zoomX *= amount;
+                this.zoomY *= amount;
+            }
+        }
+
+        class Scene {
+            constructor(name = 'Vaovao') {
+                this.name = name;
+                this.gameObjects = [];
+                this.isActive = false;
+                this.camera = new Camera();
+                this.physics = new Physics();
+                this.audioManager = new AudioManager();
+            }
+
+            addGameObject(gameObject) {
+                this.gameObjects.push(gameObject);
+                this.physics.addObject(gameObject);
+            }
+
+            removeGameObject(gameObject) {
+                const idx = this.gameObjects.indexOf(gameObject);
+                if (idx > -1) this.gameObjects.splice(idx, 1);
+                this.physics.removeObject(gameObject);
+            }
+
+            getGameObjectsByTag(tag) {
+                return this.gameObjects.filter(obj => obj.tags.includes(tag));
+            }
+
+            getGameObjectsByType(type) {
+                return this.gameObjects.filter(obj => obj.type === type);
+            }
+
+            update(deltaTime) {
+                for (let obj of this.gameObjects) {
+                    if (obj.active) {
+                        obj.update(deltaTime);
+                    }
+                }
+                this.physics.update(deltaTime);
+                this.camera.update(deltaTime);
+            }
+
+            render(ctx) {
+                ctx.save();
+                ctx.translate(this.camera.width / 2, this.camera.height / 2);
+                ctx.scale(this.camera.zoomX, this.camera.zoomY);
+                ctx.translate(-this.camera.x, -this.camera.y);
+
+                // Sort by z-index
+                const sorted = [...this.gameObjects].sort((a, b) => a.zIndex - b.zIndex);
+                for (let obj of sorted) {
+                    if (obj.visible) {
+                        obj.render(ctx);
+                    }
+                }
+
+                ctx.restore();
+            }
+
+            serialize() {
+                return {
+                    name: this.name,
+                    gameObjects: this.gameObjects.map(obj => obj.serialize()),
+                    cameraX: this.camera.x,
+                    cameraY: this.camera.y,
+                    cameraZoom: this.camera.zoomX
+                };
+            }
+        }
+
+        class AudioManager {
+            constructor() {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                this.sounds = {};
+                this.musicVolume = 0.5;
+                this.sfxVolume = 0.5;
+            }
+
+            loadSound(name, audioUrl) {
+                this.sounds[name] = new Audio(audioUrl);
+            }
+
+            playSound(name, loop = false) {
+                if (this.sounds[name]) {
+                    const audio = this.sounds[name].cloneNode();
+                    audio.loop = loop;
+                    audio.volume = this.sfxVolume;
+                    audio.play();
+                    return audio;
+                }
+            }
+
+            stopSound(name) {
+                if (this.sounds[name]) {
+                    this.sounds[name].pause();
+                    this.sounds[name].currentTime = 0;
+                }
+            }
+
+            setMusicVolume(volume) {
+                this.musicVolume = Math.max(0, Math.min(1, volume));
+            }
+
+            setSfxVolume(volume) {
+                this.sfxVolume = Math.max(0, Math.min(1, volume));
+            }
+        }
+
+        class GameEngine {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.width = this.canvas.width;
+                this.height = this.canvas.height;
+
+                this.scenes = [];
+                this.currentScene = null;
+                this.running = false;
+                this.paused = false;
+                this.timeScale = 1;
+                this.fps = 60;
+                this.frameTime = 1000 / this.fps;
+                this.lastTime = 0;
+                this.deltaTime = 0;
+
+                this.camera = new Camera(this.width, this.height);
+                this.inputManager = new InputManager();
+                this.eventSystem = new EventSystem();
+
+                this.performanceMonitor = {
+                    fps: 60,
+                    memory: 0,
+                    drawCalls: 0
+                };
+
+                this.debugMode = true;
+                this.gridSize = 16;
+                this.showGrid = false;
+                this.showHitboxes = true;
+
+                window.addEventListener('resize', () => this.onWindowResize());
+            }
+
+            createScene(name = 'Vaovao') {
+                const scene = new Scene(name);
+                this.scenes.push(scene);
+                return scene;
+            }
+
+            loadScene(scene) {
+                this.currentScene = scene;
+                this.currentScene.isActive = true;
+                eventSystem.emit('OnSceneLoad', { scene });
+            }
+
+            unloadScene(scene) {
+                scene.isActive = false;
+                eventSystem.emit('OnSceneUnload', { scene });
+            }
+
+            update(deltaTime) {
+                if (this.paused) return;
+
+                deltaTime *= this.timeScale;
+                this.deltaTime = deltaTime;
+
+                if (this.currentScene) {
+                    this.currentScene.update(deltaTime);
+                    this.camera = this.currentScene.camera;
+                }
+
+                this.inputManager.update();
+            }
+
+            render() {
+                this.ctx.fillStyle = '#1a1a1a';
+                this.ctx.fillRect(0, 0, this.width, this.height);
+
+                if (this.showGrid) {
+                    this.renderGrid();
+                }
+
+                if (this.currentScene) {
+                    this.currentScene.render(this.ctx);
+                }
+
+                if (this.debugMode) {
+                    this.renderDebugInfo();
+                }
+            }
+
+            renderGrid() {
+                this.ctx.strokeStyle = 'rgba(0, 255, 136, 0.1)';
+                this.ctx.lineWidth = 1;
+
+                for (let x = 0; x < this.width; x += this.gridSize) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, 0);
+                    this.ctx.lineTo(x, this.height);
+                    this.ctx.stroke();
+                }
+
+                for (let y = 0; y < this.height; y += this.gridSize) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, y);
+                    this.ctx.lineTo(this.width, y);
+                    this.ctx.stroke();
+                }
+            }
+
+            renderDebugInfo() {
+                this.ctx.fillStyle = '#00ff88';
+                this.ctx.font = '12px Arial';
+                this.ctx.fillText(`FPS: ${Math.round(this.performanceMonitor.fps)}`, 10, 20);
+                this.ctx.fillText(`Objects: ${this.currentScene.gameObjects.length}`, 10, 35);
+                this.ctx.fillText(`TimeScale: ${this.timeScale.toFixed(2)}`, 10, 50);
+            }
+
+            gameLoop(currentTime) {
+                if (!this.running) return;
+
+                if (currentTime - this.lastTime >= this.frameTime) {
+                    this.update((currentTime - this.lastTime) / 1000);
+                    this.render();
+                    this.performanceMonitor.fps = 1000 / (currentTime - this.lastTime);
+                    this.lastTime = currentTime;
+                }
+
+                requestAnimationFrame((t) => this.gameLoop(t));
+            }
+
+            start() {
+                this.running = true;
+                this.lastTime = 0;
+                this.gameLoop(0);
+            }
+
+            stop() {
+                this.running = false;
+            }
+
+            pause() {
+                this.paused = true;
+                eventSystem.emit('OnPause');
+            }
+
+            resume() {
+                this.paused = false;
+                eventSystem.emit('OnResume');
+            }
+
+            setTimeScale(scale) {
+                this.timeScale = scale;
+            }
+
+            onWindowResize() {
+                // Handle resize
+            }
+
+            exportProject() {
+                return {
+                    scenes: this.scenes.map(s => s.serialize()),
+                    currentSceneIndex: this.scenes.indexOf(this.currentScene)
+                };
+            }
+
+            importProject(data) {
+                // Load project
+            }
+        }
+
+        // ============================================================================
+        // EDITOR SYSTEM
+        // ============================================================================
+
+        class EditorState {
+            constructor() {
+                this.currentMode = '2d';
+                this.selectedObject = null;
+                this.selectedObjects = [];
+                this.projectName = 'Tetika Tsy Fantatra';
+                this.scenes = [];
+                this.currentScene = null;
+                this.isDragging = false;
+                this.dragStartX = 0;
+                this.dragStartY = 0;
+            }
+
+            addScene(scene) {
+                this.scenes.push(scene);
+                if (!this.currentScene) this.currentScene = scene;
+            }
+
+            selectObject(obj) {
+                if (!this.selectedObjects.includes(obj)) {
+                    this.selectedObjects = [obj];
+                    this.selectedObject = obj;
+                    updateInspector(obj);
+                    updateHierarchy();
+                }
+            }
+
+            deselectAll() {
+                this.selectedObjects = [];
+                this.selectedObject = null;
+                updateInspector(null);
+                updateHierarchy();
+            }
+
+            deleteSelected() {
+                for (let obj of this.selectedObjects) {
+                    if (this.currentScene) {
+                        this.currentScene.removeGameObject(obj);
+                    }
+                }
+                this.deselectAll();
+            }
+
+            exportAsJSON() {
+                return {
+                    projectName: this.projectName,
+                    scenes: this.scenes.map(s => s.serialize()),
+                    currentMode: this.currentMode
+                };
+            }
+
+            importFromJSON(data) {
+                this.projectName = data.projectName;
+                this.currentMode = data.currentMode;
+                // Reconstruct scenes
+            }
+        }
+
+        class EditorRenderer {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.width = this.canvas.width;
+                this.height = this.canvas.height;
+                this.panX = 0;
+                this.panY = 0;
+                this.zoom = 1;
+                this.gridSize = 16;
+                this.showGrid = true;
+            }
+
+            render(scene, selectedObject) {
+                this.ctx.fillStyle = '#1a1a1a';
+                this.ctx.fillRect(0, 0, this.width, this.height);
+
+                if (this.showGrid) {
+                    this.drawGrid();
+                }
+
+                this.ctx.save();
+                this.ctx.translate(this.width / 2, this.height / 2);
+                this.ctx.scale(this.zoom, this.zoom);
+                this.ctx.translate(this.panX, this.panY);
+
+                if (scene) {
+                    for (let obj of scene.gameObjects) {
+                        this.drawGameObject(obj, obj === selectedObject);
+                    }
+                }
+
+                this.ctx.restore();
+
+                this.drawHUD();
+            }
+
+            drawGameObject(obj, isSelected) {
+                this.ctx.save();
+                this.ctx.translate(obj.x, obj.y);
+                this.ctx.rotate(obj.rotationZ);
+                this.ctx.scale(obj.scaleX, obj.scaleY);
+
+                this.ctx.fillStyle = obj.color;
+                this.ctx.fillRect(-obj.width / 2, -obj.height / 2, obj.width, obj.height);
+
+                if (isSelected) {
+                    this.ctx.strokeStyle = '#00ff88';
+                    this.ctx.lineWidth = 2;
+                } else {
+                    this.ctx.strokeStyle = '#00aa55';
+                    this.ctx.lineWidth = 1;
+                }
+                this.ctx.strokeRect(-obj.width / 2, -obj.height / 2, obj.width, obj.height);
+
+                // Draw pivot
+                this.ctx.fillStyle = '#ff006e';
+                this.ctx.beginPath();
+                this.ctx.arc(0, 0, 3, 0, Math.PI * 2);
+                this.ctx.fill();
+
+                // Draw children
+                for (let child of obj.children) {
+                    this.drawGameObject(child, isSelected && child === obj.children[0]);
+                }
+
+                this.ctx.restore();
+            }
+
+            drawGrid() {
+                this.ctx.strokeStyle = 'rgba(0, 255, 136, 0.1)';
+                this.ctx.lineWidth = 1;
+
+                for (let x = 0; x < this.width; x += this.gridSize) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, 0);
+                    this.ctx.lineTo(x, this.height);
+                    this.ctx.stroke();
+                }
+
+                for (let y = 0; y < this.height; y += this.gridSize) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, y);
+                    this.ctx.lineTo(this.width, y);
+                    this.ctx.stroke();
+                }
+            }
+
+            drawHUD() {
+                this.ctx.fillStyle = '#00ff88';
+                this.ctx.font = '12px Arial';
+                this.ctx.fillText(`Zoom: ${(this.zoom * 100).toFixed(0)}%`, 10, 20);
+                this.ctx.fillText(`Pan: (${this.panX.toFixed(0)}, ${this.panY.toFixed(0)})`, 10, 35);
+            }
+
+            worldToScreen(x, y) {
+                return {
+                    x: (x + this.panX) * this.zoom + this.width / 2,
+                    y: (y + this.panY) * this.zoom + this.height / 2
+                };
+            }
+
+            screenToWorld(x, y) {
+                return {
+                    x: (x - this.width / 2) / this.zoom - this.panX,
+                    y: (y - this.height / 2) / this.zoom - this.panY
+                };
+            }
+
+            panCamera(dx, dy) {
+                this.panX += dx / this.zoom;
+                this.panY += dy / this.zoom;
+            }
+
+            zoomCamera(amount) {
+                this.zoom *= amount;
+            }
+        }
+
+        // ============================================================================
+        // GLOBAL SINGLETONS
+        // ============================================================================
+
+        const eventSystem = new EventSystem();
+        const inputManager = new InputManager();
+
+        const gameEngine = new GameEngine('canvasLalao2d');
+        const editorState = new EditorState();
+        const editorRenderer = new EditorRenderer('canvasLalao2d');
+
+        // Create initial scene
+        const scene = gameEngine.createScene('Saa Voalohany');
+        gameEngine.loadScene(scene);
+        editorState.addScene(scene);
+        editorState.currentScene = scene;
+
+        // ============================================================================
+        // UI SYSTEM FUNCTIONS
+        // ============================================================================
+
+        function updateInspector(obj) {
+            const panel = document.getElementById('inspectorPanel');
+
+            if (!obj) {
+                panel.innerHTML = '<p style="color: var(--ny-loko-soratra-faharoa); font-size: 12px; padding: 10px;">Fisafidy zavatra amin\'ny saa</p>';
+                return;
+            }
+
+            let html = '<div class="filan-fananana">';
+            html += '<label class="lebel-fananana">Anarana</label>';
+            html += '<input type="text" id="inspectName" class="singa-famintinana" value="' + obj.name + '">';
+
+            html += '<label class="lebel-fananana">X</label>';
+            html += '<input type="number" id="inspectX" class="singa-famintinana" value="' + obj.x.toFixed(2) + '">';
+
+            html += '<label class="lebel-fananana">Y</label>';
+            html += '<input type="number" id="inspectY" class="singa-famintinana" value="' + obj.y.toFixed(2) + '">';
+
+            html += '<label class="lebel-fananana">Sakany</label>';
+            html += '<input type="number" id="inspectWidth" class="singa-famintinana" value="' + obj.width + '">';
+
+            html += '<label class="lebel-fananana">Hahavony</label>';
+            html += '<input type="number" id="inspectHeight" class="singa-famintinana" value="' + obj.height + '">';
+
+            html += '<label class="lebel-fananana">Loko</label>';
+            html += '<input type="color" id="inspectColor" class="fomba-fanolorana-lokon" value="' + obj.color + '">';
+
+            html += '<label class="lebel-fananana">Fitokozan\'aina</label>';
+            html += '<input type="number" id="inspectRotation" class="singa-famintinana" value="' + obj.rotationZ.toFixed(2) + '" step="0.01">';
+
+            html += '<label class="lebel-fananana">Sakana-ny</label>';
+            html += '<input type="number" id="inspectScaleX" class="singa-famintinana" value="' + obj.scaleX.toFixed(2) + '" step="0.1">';
+
+            html += '<label class="lebel-fananana">Scale Y</label>';
+            html += '<input type="number" id="inspectScaleY" class="singa-famintinana" value="' + obj.scaleY.toFixed(2) + '" step="0.1">';
+
+            html += '<label class="lebel-fananana">Tara</label>';
+            html += '<input type="text" id="inspectTags" class="singa-famintinana" value="' + obj.tags.join(', ') + '" placeholder="tag1, tag2...">';
+
+            html += '</div>';
+
+            panel.innerHTML = html;
+
+            // Event listeners
+            document.getElementById('inspectName')?.addEventListener('change', (e) => {
+                obj.name = e.target.value;
+                updateHierarchy();
+            });
+
+            document.getElementById('inspectX')?.addEventListener('change', (e) => {
+                obj.x = parseFloat(e.target.value);
+            });
+
+            document.getElementById('inspectY')?.addEventListener('change', (e) => {
+                obj.y = parseFloat(e.target.value);
+            });
+
+            document.getElementById('inspectWidth')?.addEventListener('change', (e) => {
+                obj.width = parseFloat(e.target.value);
+            });
+
+            document.getElementById('inspectHeight')?.addEventListener('change', (e) => {
+                obj.height = parseFloat(e.target.value);
+            });
+
+            document.getElementById('inspectColor')?.addEventListener('change', (e) => {
+                obj.color = e.target.value;
+            });
+
+            document.getElementById('inspectRotation')?.addEventListener('change', (e) => {
+                obj.rotationZ = parseFloat(e.target.value);
+            });
+
+            document.getElementById('inspectScaleX')?.addEventListener('change', (e) => {
+                obj.scaleX = parseFloat(e.target.value);
+            });
+
+            document.getElementById('inspectScaleY')?.addEventListener('change', (e) => {
+                obj.scaleY = parseFloat(e.target.value);
+            });
+
+            document.getElementById('inspectTags')?.addEventListener('change', (e) => {
+                obj.tags = e.target.value.split(',').map(t => t.trim()).filter(t => t);
+            });
+        }
+
+        function updateHierarchy() {
+            const panel = document.getElementById('hierarchyPanel');
+
+            if (!editorState.currentScene) {
+                panel.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            for (let obj of editorState.currentScene.gameObjects) {
+                html += createHierarchyItem(obj, 0);
+            }
+
+            panel.innerHTML = html;
+
+            document.querySelectorAll('.ranga-takelaka').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const objId = item.dataset.objId;
+                    const obj = editorState.currentScene.gameObjects.find(o => o.id === objId);
+                    if (obj) {
+                        editorState.selectObject(obj);
+                    }
+                });
+            });
+        }
+
+        function createHierarchyItem(obj, depth = 0) {
+            const selected = obj === editorState.selectedObject ? 'voafidy' : '';
+            let html = `<div class="ranga-takelaka ${selected}" data-obj-id="${obj.id}" style="margin-left: ${depth * 15}px;">
+                <span class="takelaka-sary">${obj.type === 'Sprite' ? '🖼️' : '📦'}</span>
+                <span>${obj.name}</span>
+            </div>`;
+
+            for (let child of obj.children) {
+                html += createHierarchyItem(child, depth + 1);
+            }
+
+            return html;
+        }
+
+        function updateCodePreview() {
+            if (!editorState.currentScene) return;
+
+            let code = `// Scene: ${editorState.currentScene.name}\n`;
+            code += `// Objects: ${editorState.currentScene.gameObjects.length}\n\n`;
+
+            for (let obj of editorState.currentScene.gameObjects) {
+                code += `const ${obj.name} = engine.createGameObject('${obj.name}');\n`;
+                code += `${obj.name}.x = ${obj.x};\n`;
+                code += `${obj.name}.y = ${obj.y};\n`;
+                code += `${obj.name}.width = ${obj.width};\n`;
+                code += `${obj.name}.height = ${obj.height};\n`;
+                code += `${obj.name}.color = '${obj.color}';\n`;
+                code += `scene.addGameObject(${obj.name});\n\n`;
+            }
+
+            document.getElementById('codeEditor').textContent = code;
+        }
+
+        // ============================================================================
+        // DRAG AND DROP HANDLING
+        // ============================================================================
+
+        document.querySelectorAll('.singa-lisy').forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                e.dataTransfer.effectAllowed = 'copy';
+                e.dataTransfer.setData('componentType', item.dataset.singa);
+            });
+        });
+
+        const canvas = document.getElementById('canvasLalao2d');
+        canvas.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+        });
+
+        canvas.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const componentType = e.dataTransfer.getData('componentType');
+            
+            if (!editorState.currentScene) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const worldPos = editorRenderer.screenToWorld(x, y);
+
+            const obj = new GameObject(componentType, worldPos.x, worldPos.y);
+            obj.type = componentType;
+            
+            if (componentType === 'sprite') {
+                obj.width = 64;
+                obj.height = 64;
+            } else if (componentType === 'rectangle') {
+                obj.width = 50;
+                obj.height = 50;
+            } else if (componentType === 'circle') {
+                obj.width = 40;
+                obj.height = 40;
+                obj.color = '#ff006e';
+            } else if (componentType === 'text') {
+                obj.width = 100;
+                obj.height = 30;
+                obj.color = '#e0e6ff';
+            } else if (componentType === 'button') {
+                obj.width = 80;
+                obj.height = 30;
+                obj.color = '#00d4ff';
+            } else if (componentType === 'player') {
+                obj.width = 40;
+                obj.height = 60;
+                obj.color = '#00ff88';
+                const rb = new Rigidbody(1, true);
+                const collider = new Collider(40, 60);
+                obj.addComponent(rb);
+                obj.addComponent(collider);
+            } else if (componentType === 'enemy') {
+                obj.width = 40;
+                obj.height = 40;
+                obj.color = '#ff006e';
+                const rb = new Rigidbody(1, true);
+                const collider = new Collider(40, 40);
+                obj.addComponent(rb);
+                obj.addComponent(collider);
+            }
+
+            editorState.currentScene.addGameObject(obj);
+            editorState.selectObject(obj);
+            updateHierarchy();
+            updateCodePreview();
+
+            showNotification('✅ Singa ' + componentType + ' nampiana');
+        });
+
+        // Mouse interaction in editor
+        let isDragging = false;
+        let draggedObject = null;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (!editorState.currentScene) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const worldPos = editorRenderer.screenToWorld(x, y);
+
+            // Check object click
+            for (let obj of editorState.currentScene.gameObjects) {
+                if (Math.abs(obj.x - worldPos.x) < obj.width / 2 && Math.abs(obj.y - worldPos.y) < obj.height / 2) {
+                    editorState.selectObject(obj);
+                    isDragging = true;
+                    draggedObject = obj;
+                    dragOffsetX = worldPos.x - obj.x;
+                    dragOffsetY = worldPos.y - obj.y;
+                    break;
+                }
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDragging || !draggedObject) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const worldPos = editorRenderer.screenToWorld(x, y);
+
+            draggedObject.x = worldPos.x - dragOffsetX;
+            draggedObject.y = worldPos.y - dragOffsetY;
+
+            updateInspector(draggedObject);
+            updateCodePreview();
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+            draggedObject = null;
+        });
+
+        // Zoom with scroll
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const zoomAmount = e.deltaY > 0 ? 0.9 : 1.1;
+            editorRenderer.zoomCamera(zoomAmount);
+        });
+
+        // Pan with middle mouse button
+        let isPanning = false;
+        let panStartX = 0;
+        let panStartY = 0;
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (e.button === 2) { // Right mouse button
+                isPanning = true;
+                panStartX = e.clientX;
+                panStartY = e.clientY;
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isPanning) return;
+            const dx = e.clientX - panStartX;
+            const dy = e.clientY - panStartY;
+            editorRenderer.panCamera(dx, dy);
+            panStartX = e.clientX;
+            panStartY = e.clientY;
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isPanning = false;
+        });
+
+        canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+        // ============================================================================
+        // UI EVENT HANDLERS
+        // ============================================================================
+
+        // Mode switching
+        document.querySelectorAll('.botatry-fomba').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.botatry-fomba').forEach(b => b.classList.remove('mavitrika'));
+                btn.classList.add('mavitrika');
+                editorState.currentMode = btn.dataset.fomba;
+                showNotification('Fomba: ' + btn.dataset.fomba.toUpperCase());
+            });
+        });
+
+        // Tab switching
+        document.querySelectorAll('.botatry-tab-panela').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                document.querySelectorAll('.botatry-tab-panela').forEach(b => b.classList.remove('mavitrika'));
+                btn.classList.add('mavitrika');
+
+                document.getElementById('tabCompera').classList.toggle('hidden', tab !== 'componera');
+                document.getElementById('tabAsa').classList.toggle('hidden', tab !== 'asa');
+            });
+        });
+
+        // Bottom tabs
+        document.querySelectorAll('.botatry-tab-koditra').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tabKoditra;
+                document.querySelectorAll('.botatry-tab-koditra').forEach(b => b.classList.remove('mavitrika'));
+                btn.classList.add('mavitrika');
+
+                document.getElementById('tabKoditra').classList.toggle('hidden', tab !== 'code');
+                document.getElementById('tabLaka').classList.toggle('hidden', tab !== 'laka');
+                document.getElementById('tabDebug').classList.toggle('hidden', tab !== 'debug');
+            });
+        });
+
+        // Right panel tabs
+        document.querySelectorAll('.botatry-tab-havanana').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tabInsp;
+                document.querySelectorAll('.botatry-tab-havanana').forEach(b => b.classList.remove('mavitrika'));
+                btn.classList.add('mavitrika');
+
+                document.getElementById('tabInspector').classList.toggle('hidden', tab !== 'inspector');
+                document.getElementById('tabTakelaka').classList.toggle('hidden', tab !== 'takelaka');
+            });
+        });
+
+        // Center canvas tabs
+        document.querySelectorAll('.botatry-tab-saa').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tabSaa;
+                document.querySelectorAll('.botatry-tab-saa').forEach(b => b.classList.remove('mavitrika'));
+                btn.classList.add('mavitrika');
+
+                document.getElementById('tabSaa').classList.toggle('hidden', tab !== 'scene');
+                document.getElementById('tabPlay').classList.toggle('hidden', tab !== 'play');
+                document.getElementById('tabConsole').classList.toggle('hidden', tab !== 'console');
+            });
+        });
+
+        // Play button
+        document.getElementById('playBtn').addEventListener('click', () => {
+            gameEngine.start();
+            showNotification('🎮 Lalao voarava');
+        });
+
+        // Save button
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            document.getElementById('saveDialog').classList.remove('hidden');
+        });
+
+        // Load button
+        document.getElementById('loadBtn').addEventListener('click', () => {
+            const projects = JSON.parse(localStorage.getItem('neo_projects') || '[]');
+            let html = '';
+
+            if (projects.length === 0) {
+                html = '<p style="color: var(--ny-loko-soratra-faharoa);">Tsy misy tetika nafidy</p>';
+            } else {
+                projects.forEach((proj, idx) => {
+                    html += `<div style="background: var(--ny-loko-fonon); border: 1px solid var(--ny-soratra-bingana); padding: 10px; margin-bottom: 8px; border-radius: 4px; cursor: pointer;" onclick="loadProjectFromStorage(${idx})">
+                        <strong>${proj.projectName}</strong><br>
+                        <small style="color: var(--ny-loko-soratra-faharoa);">${proj.timestamp}</small>
+                    </div>`;
+                });
+            }
+
+            document.getElementById('savedProjectsList').innerHTML = html;
+            document.getElementById('loadDialog').classList.remove('hidden');
+        });
+
+        // ============================================================================
+        // SAVE/LOAD SYSTEM
+        // ============================================================================
+
+        function closeSaveDialog() {
+            document.getElementById('saveDialog').classList.add('hidden');
+        }
+
+        function saveProject() {
+            const name = document.getElementById('saveName').value;
+            editorState.projectName = name;
+
+            const data = {
+                projectName: name,
+                timestamp: new Date().toLocaleString('mg-MG'),
+                data: editorState.exportAsJSON()
+            };
+
+            const projects = JSON.parse(localStorage.getItem('neo_projects') || '[]');
+            projects.push(data);
+            localStorage.setItem('neo_projects', JSON.stringify(projects));
+
+            showNotification('💾 Tetika navoafidy');
+            closeSaveDialog();
+        }
+
+        function closeLoadDialog() {
+            document.getElementById('loadDialog').classList.add('hidden');
+        }
+
+        function loadProjectFromStorage(index) {
+            const projects = JSON.parse(localStorage.getItem('neo_projects') || '[]');
+            if (projects[index]) {
+                editorState.projectName = projects[index].projectName;
+                editorState.importFromJSON(projects[index].data);
+                showNotification('📂 Tetika naraotra');
+                closeLoadDialog();
+            }
+        }
+
+        // ============================================================================
+        // UTILITY FUNCTIONS
+        // ============================================================================
+
+        function showNotification(message) {
+            const notif = document.createElement('div');
+            notif.className = 'fampahalalana-isika';
+            notif.textContent = message;
+            document.body.appendChild(notif);
+
+            setTimeout(() => {
+                notif.remove();
+            }, 3000);
+        }
+
+        function createLohatenyPanelaSmall(text) {
+            const div = document.createElement('div');
+            div.className = 'lohateny-panela-small';
+            div.style.fontSize = '11px';
+            div.style.fontWeight = '700';
+            div.style.color = 'var(--ny-karazana-lalao)';
+            div.style.textTransform = 'uppercase';
+            div.style.letterSpacing = '1px';
+            div.style.marginBottom = '8px';
+            div.textContent = text;
+            return div;
+        }
+
+        // ============================================================================
+        // ANIMATION LOOP
+        // ============================================================================
+
+        function editorLoop() {
+            editorRenderer.render(editorState.currentScene, editorState.selectedObject);
+            requestAnimationFrame(editorLoop);
+        }
+
+        editorLoop();
+        updateHierarchy();
+        updateCodePreview();
+
+        // Initial notification
+        showNotification('🎉 NEO GAME ENGINE ULTRA V1 VOAMARINA');
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key === 's') {
+                    e.preventDefault();
+                    document.getElementById('saveBtn').click();
+                }
+                if (e.key === 'o') {
+                    e.preventDefault();
+                    document.getElementById('loadBtn').click();
+                }
+            }
+
+            if (e.key === 'Delete') {
+                if (editorState.selectedObject) {
+                    editorState.deleteSelected();
+                    updateHierarchy();
+                    updateCodePreview();
+                }
+            }
+
+            if (e.key === 'd' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                gameEngine.debugMode = !gameEngine.debugMode;
+            }
+        });
+    </script>
+
+    <style>
+        .lohateny-panela-small {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--ny-karazana-lalao);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+    </style>
 </body>
 </html>
