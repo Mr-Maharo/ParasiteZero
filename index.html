@@ -1,934 +1,466 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open World 2D Game Engine</title>
+    <title>Auto Like Facebook</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Arial', sans-serif;
-            background: #1a1a1a;
-            color: #fff;
-            overflow: hidden;
-        }
-
-        #gameContainer {
-            width: 100vw;
-            height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1877f2, #0c5bc4);
+            min-height: 100vh;
             display: flex;
-            background: #222;
-        }
-
-        #gameCanvas {
-            flex: 1;
-            background: #87ceeb;
-            display: block;
-            cursor: crosshair;
-        }
-
-        #ui {
-            width: 250px;
-            background: #2a2a2a;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
-            overflow-y: auto;
-            border-left: 2px solid #444;
         }
-
-        .ui-section {
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #1877f2;
+            font-size: 24px;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .subtitle {
+            color: #65676b;
+            text-align: center;
             margin-bottom: 25px;
-            border-bottom: 1px solid #444;
-            padding-bottom: 15px;
-        }
-
-        .ui-section h3 {
             font-size: 14px;
-            color: #4a9eff;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
-
-        .stat {
-            font-size: 12px;
-            margin: 8px 0;
-            color: #aaa;
+        .form-group {
+            margin-bottom: 18px;
         }
-
-        .stat strong {
-            color: #fff;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            background: #4a9eff;
-            border: none;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: 0.2s;
-        }
-
-        button:hover {
-            background: #357abd;
-        }
-
-        button.danger {
-            background: #ff6b6b;
-        }
-
-        button.danger:hover {
-            background: #cc5555;
-        }
-
-        .inventory-item {
-            background: #333;
-            padding: 8px;
-            margin: 5px 0;
-            border-radius: 3px;
-            font-size: 11px;
-            border-left: 3px solid #4a9eff;
-        }
-
-        .object-list {
-            font-size: 11px;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-
-        .object-item {
-            padding: 5px;
-            margin: 3px 0;
-            background: #333;
-            border-radius: 2px;
-            color: #9d9;
-        }
-
-        input[type="text"], input[type="number"], select {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            background: #333;
-            border: 1px solid #444;
-            color: #fff;
-            border-radius: 3px;
-            font-size: 12px;
-        }
-
-        input[type="text"]:focus, input[type="number"]:focus, select:focus {
-            outline: none;
-            border-color: #4a9eff;
-            background: #3a3a3a;
-        }
-
-        .health-bar {
-            width: 100%;
-            height: 20px;
-            background: #333;
-            border-radius: 3px;
-            margin: 5px 0;
-            overflow: hidden;
-        }
-
-        .health-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff6b6b, #ffaa6b);
-            transition: width 0.2s;
-        }
-
-        .tabs {
-            display: flex;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #444;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 8px;
-            background: #333;
-            border: none;
-            color: #aaa;
-            cursor: pointer;
-            font-size: 11px;
-            border-radius: 0;
-        }
-
-        .tab-btn.active {
-            background: #4a9eff;
-            color: white;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
+        label {
             display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #1c1e21;
+            font-size: 14px;
         }
-
-        #worldLog {
-            font-size: 10px;
-            max-height: 100px;
+        input, select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #dddfe2;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        input:focus, select:focus {
+            border-color: #1877f2;
+        }
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+        }
+        .btn-primary {
+            background: #1877f2;
+            color: white;
+            width: 100%;
+        }
+        .btn-primary:hover { background: #166fe5; }
+        .btn-danger {
+            background: #e41e3f;
+            color: white;
+            width: 100%;
+        }
+        .btn-danger:hover { background: #c91a36; }
+        .btn-secondary {
+            background: #e4e6eb;
+            color: #1c1e21;
+            width: 100%;
+        }
+        .btn-secondary:hover { background: #d8dadf; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .controls { display: flex; gap: 10px; }
+        .controls .btn { margin-bottom: 0; }
+        .status {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            max-height: 300px;
             overflow-y: auto;
-            background: #1a1a1a;
-            padding: 8px;
-            border-radius: 3px;
-            color: #9d9;
+            background: #f0f2f5;
+            font-family: 'Consolas', 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
         }
-
-        .log-entry {
-            margin: 2px 0;
+        .status .success { color: #00a400; }
+        .status .error { color: #e41e3f; }
+        .status .info { color: #1877f2; }
+        .status .warn { color: #e6a817; }
+        .status .log-line { padding: 2px 0; }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 10px;
+            background: #f0f2f5;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #65676b;
+        }
+        .stats span { font-weight: 700; color: #1c1e21; }
+        .hidden { display: none; }
+        .instructions {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff8e1;
+            border-radius: 8px;
+            border-left: 4px solid #e6a817;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .instructions ol {
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+        .instructions code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
-    <div id="gameContainer">
-        <canvas id="gameCanvas"></canvas>
-        <div id="ui">
-            <div class="ui-section">
-                <h3>⚙️ Engine Control</h3>
-                <button onclick="engine.togglePause()">▶ Play/Pause</button>
-                <button onclick="engine.toggleDebug()">🐛 Debug Mode</button>
-                <button onclick="engine.clearWorld()">🗑 Clear World</button>
-                <button onclick="engine.exportGame()" class="danger">💾 Export Game</button>
-            </div>
+    <div class="container">
+        <h1>👍 Auto Like Facebook</h1>
+        <p class="subtitle">Mampiasa Proxy mba handefasana any amin'ny Facebook</p>
 
-            <div class="ui-section">
-                <h3>👤 Player Stats</h3>
-                <div class="stat">Health: <strong id="playerHealth">100</strong>/100</div>
-                <div class="health-bar">
-                    <div class="health-fill" id="healthBar" style="width: 100%"></div>
+        <div class="form-group">
+            <label>🔑 Token (fb_dtsg)</label>
+            <input type="text" id="fbDtsg" placeholder="Apetraho eto ny fb_dtsg token...">
+        </div>
+
+        <div class="form-group">
+            <label>🍪 Cookies (jereo ny torolàlana etsy ambany)</label>
+            <textarea id="cookiesInput" rows="3" placeholder="Apetraho eto ny cookies rehetra (jereo ny torolàlana)" style="width:100%;padding:10px;border:2px solid #dddfe2;border-radius:8px;font-size:13px;font-family:monospace;resize:vertical;"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>📝 Post ID na URL</label>
+            <input type="text" id="postInput" placeholder="Ohatra: 100078998814064_123456789">
+        </div>
+
+        <div class="form-group">
+            <label>🔄 Fomba</label>
+            <select id="mode">
+                <option value="once">Like iray ihany</option>
+                <option value="auto">Auto Like (miverimberina)</option>
+            </select>
+        </div>
+
+        <div id="autoOptions" class="hidden">
+            <div style="display:flex;gap:10px;">
+                <div class="form-group" style="flex:1;">
+                    <label>Isan'ny like</label>
+                    <input type="number" id="likeCount" value="10" min="1" max="50">
                 </div>
-                <div class="stat">Coins: <strong id="playerCoins">0</strong></div>
-                <div class="stat">Pos: <strong id="playerPos">0, 0</strong></div>
-                <div class="stat">Chunk: <strong id="currentChunk">0, 0</strong></div>
-            </div>
-
-            <div class="ui-section">
-                <h3>🎒 Inventory</h3>
-                <div id="inventoryList"></div>
-            </div>
-
-            <div class="ui-section">
-                <div class="tabs">
-                    <button class="tab-btn active" onclick="switchTab(0)">Build</button>
-                    <button class="tab-btn" onclick="switchTab(1)">NPC</button>
-                    <button class="tab-btn" onclick="switchTab(2)">World</button>
-                </div>
-
-                <div class="tab-content active" id="tab0">
-                    <h3>🏗️ Build Objects</h3>
-                    <select id="objectType" onchange="updateObjectProperties()">
-                        <option value="tree">🌳 Tree</option>
-                        <option value="rock">🪨 Rock</option>
-                        <option value="house">🏠 House</option>
-                        <option value="water">💧 Water</option>
-                        <option value="chest">🎁 Chest</option>
-                        <option value="coin">💰 Coin</option>
-                    </select>
-                    <button onclick="engine.setPlacementMode(true)">📍 Place Object (Click Map)</button>
-                    <div id="objectProps"></div>
-                </div>
-
-                <div class="tab-content" id="tab1">
-                    <h3>🤖 NPC Manager</h3>
-                    <input type="text" id="npcName" placeholder="NPC Name">
-                    <input type="text" id="npcDialog" placeholder="Dialog text">
-                    <select id="npcBehavior">
-                        <option value="patrol">Patrol</option>
-                        <option value="idle">Idle</option>
-                        <option value="follow">Follow Player</option>
-                    </select>
-                    <button onclick="engine.addNPC()">➕ Add NPC</button>
-                    <div id="npcList" class="object-list"></div>
-                </div>
-
-                <div class="tab-content" id="tab2">
-                    <h3>🌍 World Settings</h3>
-                    <label>Map Size:</label>
-                    <select id="mapSize">
-                        <option value="2000">Small (2000x2000)</option>
-                        <option value="5000" selected>Medium (5000x5000)</option>
-                        <option value="10000">Large (10000x10000)</option>
-                    </select>
-                    <label>Chunk Size:</label>
-                    <input type="number" id="chunkSize" value="512" min="128" max="1024">
-                    <button onclick="engine.generateProceduralWorld()">🌱 Generate Procedural</button>
-                    <div id="worldLog"></div>
+                <div class="form-group" style="flex:1;">
+                    <label>Interval (segondra)</label>
+                    <input type="number" id="interval" value="5" min="3" max="60">
                 </div>
             </div>
+        </div>
 
-            <div class="ui-section">
-                <h3>📊 World Stats</h3>
-                <div class="stat">Objects: <strong id="objectCount">0</strong></div>
-                <div class="stat">NPCs: <strong id="npcCount">0</strong></div>
-                <div class="stat">FPS: <strong id="fpsCounter">60</strong></div>
-                <div class="stat">Chunks: <strong id="chunkCount">0</strong></div>
-            </div>
+        <div class="controls">
+            <button class="btn btn-primary" id="startBtn" onclick="start()">▶ Atombohy</button>
+            <button class="btn btn-danger" id="stopBtn" onclick="stop()" disabled>⏹ Ajanony</button>
+        </div>
+
+        <button class="btn btn-secondary" onclick="clearLog()">🗑 Diovy ny log</button>
+
+        <div class="stats">
+            <div>Nalefa: <span id="sentCount">0</span></div>
+            <div>Nahomby: <span id="successCount">0</span></div>
+            <div>Diso: <span id="errorCount">0</span></div>
+        </div>
+
+        <div class="status" id="log">💡 Araho ny torolàlana etsy ambany aloha.</div>
+
+        <div class="instructions">
+            <strong>📖 Torolàlana feno</strong>
+            <ol>
+                <li><strong>Midira ao amin'ny Facebook</strong> amin'ny navigateur (Chrome, Firefox, Edge)</li>
+                <li><strong>Mankanesa any amin'ny pejy misy ilay post</strong> tianao haseho like</li>
+                <li><strong>Kitiho F12</strong> → mankanesa any amin'ny <strong>Console</strong></li>
+                <li>Adikao sy apetraho ao amin'ny Console ity code ity:
+                    <pre style="background:#f0f0f0;padding:8px;border-radius:4px;margin-top:5px;font-size:11px;overflow-x:auto;">
+// Maka ny fb_dtsg
+var dtsg = document.querySelector('[name="fb_dtsg"]')?.value;
+if (!dtsg) {
+    var m = document.documentElement.innerHTML.match(/["']fb_dtsg["'][\s:=]+["']([^"']+)["']/);
+    if (m) dtsg = m[1];
+}
+console.log('fb_dtsg:', dtsg);
+
+// Maka ny cookies
+console.log('Cookies:', document.cookie);
+
+// Asehoy ao amin'ny alert
+alert('fb_dtsg: ' + dtsg + '\n\nCookies hita ao amin\'ny Console');
+                    </pre>
+                </li>
+                <li>Adikao eto ny <strong>fb_dtsg</strong> sy ny <strong>Cookies</strong></li>
+                <li>Apetraho ny <strong>Post ID</strong> na ny URL</li>
+                <li>Tsindrio <strong>Atombohy</strong></li>
+            </ol>
+            <p style="margin-top:10px;color:#e41e3f;"><strong>⚠️ Zava-dehibe:</strong> Raha tsy mandeha ny proxy, azonao atao ny misolo proxy hafa ao amin'ny code (jereo ny <code>PROXY_URL</code> ao amin'ny JavaScript).</p>
         </div>
     </div>
 
     <script>
-        // ==================== ENGINE CORE ====================
-        class GameEngine {
-            constructor() {
-                this.canvas = document.getElementById('gameCanvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.canvas.width = window.innerWidth - 250;
-                this.canvas.height = window.innerHeight;
+        let running = false;
+        let timer = null;
+        let sent = 0;
+        let success = 0;
+        let errors = 0;
 
-                this.running = true;
-                this.debug = false;
-                this.placementMode = false;
-                this.currentObjectType = 'tree';
+        // CORS Proxy
+        // Afaka misolo proxy hafa eto ianao raha tsy mandeha ity
+        const PROXY_URL = 'https://api.allorigins.win/raw?url=';
+        // const PROXY_URL = 'https://corsproxy.io/?';
+        // const PROXY_URL = 'https://api.codetabs.com/v1/proxy?quest=';
 
-                // Game state
-                this.world = {
-                    width: 5000,
-                    height: 5000,
-                    chunkSize: 512,
-                    chunks: new Map(),
-                    objects: [],
-                    npcs: [],
-                    player: null
-                };
+        document.getElementById('mode').addEventListener('change', function() {
+            document.getElementById('autoOptions').classList.toggle('hidden', this.value !== 'auto');
+        });
 
-                this.camera = {
-                    x: 0,
-                    y: 0,
-                    width: this.canvas.width,
-                    height: this.canvas.height,
-                    zoom: 1
-                };
+        function log(msg, type = 'info') {
+            const logEl = document.getElementById('log');
+            const line = document.createElement('div');
+            line.className = 'log-line ' + type;
+            const time = new Date().toLocaleTimeString();
+            line.textContent = `[${time}] ${msg}`;
+            logEl.appendChild(line);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
 
-                this.input = {
-                    keys: {},
-                    mouse: { x: 0, y: 0, clicked: false }
-                };
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+            sent = 0;
+            success = 0;
+            errors = 0;
+            document.getElementById('sentCount').textContent = '0';
+            document.getElementById('successCount').textContent = '0';
+            document.getElementById('errorCount').textContent = '0';
+        }
 
-                this.deltaTime = 0;
-                this.lastTime = Date.now();
-                this.frameCount = 0;
-                this.fps = 60;
+        function extractPostId(input, userId) {
+            // Raha URL misy fbid=
+            const fbidMatch = input.match(/[?&]fbid=(\d+)/);
+            if (fbidMatch) return userId ? userId + '_' + fbidMatch[1] : fbidMatch[1];
 
-                this.init();
+            // Raha misy _ (user_post)
+            const underscoreMatch = input.match(/(\d+)_(\d+)/);
+            if (underscoreMatch) return underscoreMatch[1] + '_' + underscoreMatch[2];
+
+            // Raha isa fotsiny
+            const digitMatch = input.match(/^(\d+)$/);
+            if (digitMatch) return digitMatch[1];
+
+            return null;
+        }
+
+        function extractUserId(cookies) {
+            const match = cookies.match(/c_user=(\d+)/);
+            return match ? match[1] : null;
+        }
+
+        function parseCookies(cookieStr) {
+            // Manadio ny cookies
+            return cookieStr.trim();
+        }
+
+        async function sendLike(fbDtsg, cookies, postId) {
+            const userId = extractUserId(cookies);
+            if (!userId) {
+                return { success: false, error: 'Tsy hita ny c_user amin\'ny cookies' };
             }
 
-            init() {
-                // Create player
-                this.world.player = new Player(2500, 2500, this.world);
-
-                // Setup input
-                window.addEventListener('keydown', (e) => this.input.keys[e.key.toLowerCase()] = true);
-                window.addEventListener('keyup', (e) => this.input.keys[e.key.toLowerCase()] = false);
-
-                this.canvas.addEventListener('mousemove', (e) => {
-                    const rect = this.canvas.getBoundingClientRect();
-                    this.input.mouse.x = e.clientX - rect.left;
-                    this.input.mouse.y = e.clientY - rect.top;
-                });
-
-                this.canvas.addEventListener('click', (e) => {
-                    if (this.placementMode) {
-                        const worldX = this.camera.x + this.input.mouse.x / this.camera.zoom;
-                        const worldY = this.camera.y + this.input.mouse.y / this.camera.zoom;
-                        this.placeObject(worldX, worldY, this.currentObjectType);
-                    }
-                });
-
-                // Initial chunk load
-                this.loadChunks();
-
-                // Start game loop
-                this.gameLoop();
+            // Mamorona ny Post ID raha misy fbid
+            let finalPostId = postId;
+            const fbidMatch = postId.match(/^(\d+)$/);
+            if (fbidMatch && userId) {
+                finalPostId = userId + '_' + postId;
             }
 
-            gameLoop() {
-                const now = Date.now();
-                this.deltaTime = (now - this.lastTime) / 1000;
-                this.lastTime = now;
-
-                if (this.running) {
-                    // Update
-                    this.update();
-
-                    // Load/unload chunks
-                    this.loadChunks();
-
-                    // Render
-                    this.render();
+            // Mamorona ny form data
+            const formData = new URLSearchParams();
+            formData.append('fb_dtsg', fbDtsg);
+            formData.append('fb_api_caller_class', 'RelayModern');
+            formData.append('fb_api_req_friendly_name', 'UFI2LikeStoryMutation');
+            formData.append('variables', JSON.stringify({
+                input: {
+                    story_id: finalPostId,
+                    actor_id: userId,
+                    client_mutation_id: Math.random().toString(36).substring(2, 15)
                 }
+            }));
+            formData.append('server_timestamps', 'true');
+            formData.append('doc_id', '4745183335119665');
 
-                this.frameCount++;
-                if (this.frameCount % 10 === 0) {
-                    this.fps = Math.round(1 / this.deltaTime);
-                    document.getElementById('fpsCounter').textContent = this.fps;
-                }
+            const fbUrl = 'https://www.facebook.com/web_graphql/';
+            const proxyUrl = PROXY_URL + encodeURIComponent(fbUrl);
 
-                requestAnimationFrame(() => this.gameLoop());
-            }
+            log(`📤 Mandefa like ho an'ny: ${finalPostId} (amin'ny alalan'ny proxy)`, 'info');
 
-            update() {
-                // Update player
-                this.world.player.update(this.input, this.deltaTime);
-
-                // Update NPCs
-                this.world.npcs.forEach(npc => npc.update(this.world.player, this.deltaTime));
-
-                // Update camera
-                this.updateCamera();
-
-                // Update UI
-                this.updateUI();
-            }
-
-            updateCamera() {
-                const targetX = this.world.player.x - this.camera.width / 2;
-                const targetY = this.world.player.y - this.camera.height / 2;
-
-                this.camera.x += (targetX - this.camera.x) * 0.1;
-                this.camera.y += (targetY - this.camera.y) * 0.1;
-
-                // Clamp camera
-                this.camera.x = Math.max(0, Math.min(this.camera.x, this.world.width - this.camera.width));
-                this.camera.y = Math.max(0, Math.min(this.camera.y, this.world.height - this.camera.height));
-            }
-
-            loadChunks() {
-                const chunkX = Math.floor(this.world.player.x / this.world.chunkSize);
-                const chunkY = Math.floor(this.world.player.y / this.world.chunkSize);
-
-                // Load chunks around player (3x3 grid)
-                for (let dx = -1; dx <= 1; dx++) {
-                    for (let dy = -1; dy <= 1; dy++) {
-                        const cx = chunkX + dx;
-                        const cy = chunkY + dy;
-                        const key = `${cx},${cy}`;
-
-                        if (!this.world.chunks.has(key)) {
-                            this.world.chunks.set(key, new Chunk(cx, cy, this.world.chunkSize));
-                        }
-                    }
-                }
-
-                // Unload distant chunks
-                const chunksToDelete = [];
-                this.world.chunks.forEach((chunk, key) => {
-                    if (Math.abs(chunk.x - chunkX) > 2 || Math.abs(chunk.y - chunkY) > 2) {
-                        chunksToDelete.push(key);
-                    }
-                });
-                chunksToDelete.forEach(key => this.world.chunks.delete(key));
-
-                document.getElementById('chunkCount').textContent = this.world.chunks.size;
-                document.getElementById('currentChunk').textContent = `${chunkX}, ${chunkY}`;
-            }
-
-            render() {
-                this.ctx.save();
-
-                // Clear canvas
-                this.ctx.fillStyle = '#87ceeb';
-                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-                // Apply camera transform
-                this.ctx.translate(-this.camera.x, -this.camera.y);
-
-                // Draw world background (grass)
-                this.ctx.fillStyle = '#7cb342';
-                this.ctx.fillRect(0, 0, this.world.width, this.world.height);
-
-                // Draw chunks grid (debug)
-                if (this.debug) {
-                    this.ctx.strokeStyle = 'rgba(0,0,0,0.2)';
-                    this.ctx.lineWidth = 1;
-                    for (let i = 0; i <= this.world.width; i += this.world.chunkSize) {
-                        this.ctx.beginPath();
-                        this.ctx.moveTo(i, 0);
-                        this.ctx.lineTo(i, this.world.height);
-                        this.ctx.stroke();
-                        this.ctx.beginPath();
-                        this.ctx.moveTo(0, i);
-                        this.ctx.lineTo(this.world.width, i);
-                        this.ctx.stroke();
-                    }
-                }
-
-                // Draw world objects
-                this.world.objects.forEach(obj => obj.render(this.ctx));
-
-                // Draw NPCs
-                this.world.npcs.forEach(npc => npc.render(this.ctx));
-
-                // Draw player
-                this.world.player.render(this.ctx);
-
-                this.ctx.restore();
-            }
-
-            placeObject(x, y, type) {
-                const obj = new WorldObject(x, y, type, this.world);
-                this.world.objects.push(obj);
-                this.logWorld(`Placed ${type} at ${Math.round(x)}, ${Math.round(y)}`);
-                document.getElementById('objectCount').textContent = this.world.objects.length;
-            }
-
-            setPlacementMode(active) {
-                this.placementMode = active;
-                this.currentObjectType = document.getElementById('objectType').value;
-                if (active) {
-                    this.logWorld(`Placement mode: ${this.currentObjectType}`);
-                }
-            }
-
-            togglePause() {
-                this.running = !this.running;
-            }
-
-            toggleDebug() {
-                this.debug = !this.debug;
-            }
-
-            clearWorld() {
-                if (confirm('Clear all objects and NPCs?')) {
-                    this.world.objects = [];
-                    this.world.npcs = [];
-                    this.logWorld('World cleared');
-                    document.getElementById('objectCount').textContent = 0;
-                    document.getElementById('npcCount').textContent = 0;
-                }
-            }
-
-            generateProceduralWorld() {
-                this.world.objects = [];
-
-                // Generate trees (40%)
-                for (let i = 0; i < 150; i++) {
-                    this.placeObject(
-                        Math.random() * this.world.width,
-                        Math.random() * this.world.height,
-                        'tree'
-                    );
-                }
-
-                // Generate rocks (20%)
-                for (let i = 0; i < 80; i++) {
-                    this.placeObject(
-                        Math.random() * this.world.width,
-                        Math.random() * this.world.height,
-                        'rock'
-                    );
-                }
-
-                // Generate water (15%)
-                for (let i = 0; i < 40; i++) {
-                    this.placeObject(
-                        Math.random() * this.world.width,
-                        Math.random() * this.world.height,
-                        'water'
-                    );
-                }
-
-                // Generate houses (5%)
-                for (let i = 0; i < 15; i++) {
-                    this.placeObject(
-                        Math.random() * this.world.width,
-                        Math.random() * this.world.height,
-                        'house'
-                    );
-                }
-
-                // Generate coins (10%)
-                for (let i = 0; i < 50; i++) {
-                    this.placeObject(
-                        Math.random() * this.world.width,
-                        Math.random() * this.world.height,
-                        'coin'
-                    );
-                }
-
-                this.logWorld('Procedural world generated');
-            }
-
-            addNPC() {
-                const name = document.getElementById('npcName').value || 'NPC';
-                const dialog = document.getElementById('npcDialog').value || 'Hello!';
-                const behavior = document.getElementById('npcBehavior').value;
-
-                const npc = new NPC(
-                    Math.random() * this.world.width,
-                    Math.random() * this.world.height,
-                    name,
-                    dialog,
-                    behavior
-                );
-                this.world.npcs.push(npc);
-                this.logWorld(`Added NPC: ${name}`);
-                document.getElementById('npcCount').textContent = this.world.npcs.length;
-                this.updateNPCList();
-            }
-
-            exportGame() {
-                const gameData = {
-                    world: {
-                        width: this.world.width,
-                        height: this.world.height,
-                        chunkSize: this.world.chunkSize
+            try {
+                const res = await fetch(proxyUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Cookie': cookies
                     },
-                    objects: this.world.objects.map(o => ({
-                        x: o.x,
-                        y: o.y,
-                        type: o.type,
-                        width: o.width,
-                        height: o.height
-                    })),
-                    npcs: this.world.npcs.map(n => ({
-                        x: n.x,
-                        y: n.y,
-                        name: n.name,
-                        dialog: n.dialog,
-                        behavior: n.behavior
-                    })),
-                    player: {
-                        x: this.world.player.x,
-                        y: this.world.player.y
+                    body: formData.toString()
+                });
+
+                const text = await res.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    // Mety mila manandrana proxy hafa
+                    log(`⚠️ Tsy JSON ny valiny. Santo: ${text.substring(0, 150)}`, 'warn');
+                    return { success: false, error: 'Tsy JSON ny valiny. Mety tsy mandeha ny proxy.' };
+                }
+
+                if (data.data?.story?.reactors?.count !== undefined) {
+                    return { success: true, data };
+                } else if (data.errors) {
+                    return { success: false, error: data.errors[0]?.message || 'Unknown error', code: data.errors[0]?.code };
+                } else {
+                    return { success: false, error: JSON.stringify(data).substring(0, 200) };
+                }
+            } catch (err) {
+                return { success: false, error: err.message, code: 0 };
+            }
+        }
+
+        async function start() {
+            if (running) return;
+
+            const fbDtsg = document.getElementById('fbDtsg').value.trim();
+            const cookies = document.getElementById('cookiesInput').value.trim();
+            const postInput = document.getElementById('postId').value.trim();
+            const mode = document.getElementById('mode').value;
+
+            // Validation
+            if (!fbDtsg) {
+                log('❌ Mila apetraka ny fb_dtsg token', 'error');
+                return;
+            }
+            if (!cookies) {
+                log('❌ Mila apetraka ny cookies', 'error');
+                return;
+            }
+            if (!postInput) {
+                log('❌ Mila apetraka ny Post ID na URL', 'error');
+                return;
+            }
+
+            const userId = extractUserId(cookies);
+            if (!userId) {
+                log('❌ Tsy hita ny User ID (c_user) ao amin\'ny cookies', 'error');
+                return;
+            }
+
+            const postId = extractPostId(postInput, userId);
+            if (!postId) {
+                log('❌ Tsy hita ny Post ID', 'error');
+                return;
+            }
+
+            log(`👤 User ID: ${userId}`, 'info');
+            log(`📌 Post ID: ${postId}`, 'info');
+
+            running = true;
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = false;
+
+            if (mode === 'once') {
+                const result = await sendLike(fbDtsg, cookies, postId);
+                sent++;
+                document.getElementById('sentCount').textContent = sent;
+
+                if (result.success) {
+                    success++;
+                    document.getElementById('successCount').textContent = success;
+                    log('✅ Like nahomby!', 'success');
+                } else {
+                    errors++;
+                    document.getElementById('errorCount').textContent = errors;
+                    log(`❌ Tsy nahomby: ${result.error}`, 'error');
+                }
+                stop();
+            } else {
+                const maxCount = parseInt(document.getElementById('likeCount').value) || 10;
+                const intervalSec = parseInt(document.getElementById('interval').value) || 5;
+                const intervalMs = intervalSec * 1000;
+
+                log(`▶️ Auto-like natomboka — ${maxCount} like, isaky ny ${intervalSec}s`, 'info');
+
+                const run = async () => {
+                    if (!running || sent >= maxCount) {
+                        stop();
+                        if (sent >= maxCount) log('✅ Vita!', 'success');
+                        return;
+                    }
+
+                    const remaining = maxCount - sent;
+                    log(`📤 Like #${sent + 1}/${maxCount} (${remaining} sisa)`, 'info');
+
+                    const result = await sendLike(fbDtsg, cookies, postId);
+                    sent++;
+                    document.getElementById('sentCount').textContent = sent;
+
+                    if (result.success) {
+                        success++;
+                        document.getElementById('successCount').textContent = success;
+                        log('✅ Like nahomby!', 'success');
+                    } else {
+                        errors++;
+                        document.getElementById('errorCount').textContent = errors;
+                        log(`❌ Tsy nahomby: ${result.error}`, 'error');
+                    }
+
+                    if (running && sent < maxCount) {
+                        timer = setTimeout(run, intervalMs);
+                    } else {
+                        stop();
                     }
                 };
 
-                const dataStr = JSON.stringify(gameData, null, 2);
-                const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'world.json';
-                link.click();
-                this.logWorld('Game exported as world.json');
-            }
-
-            updateUI() {
-                document.getElementById('playerHealth').textContent = this.world.player.health;
-                document.getElementById('healthBar').style.width = (this.world.player.health / 100 * 100) + '%';
-                document.getElementById('playerCoins').textContent = this.world.player.coins;
-                document.getElementById('playerPos').textContent = `${Math.round(this.world.player.x)}, ${Math.round(this.world.player.y)}`;
-                this.updateInventory();
-            }
-
-            updateInventory() {
-                const inv = document.getElementById('inventoryList');
-                inv.innerHTML = '';
-                if (this.world.player.inventory.length === 0) {
-                    inv.innerHTML = '<div class="stat" style="color: #999;">Empty</div>';
-                } else {
-                    this.world.player.inventory.forEach(item => {
-                        inv.innerHTML += `<div class="inventory-item">${item.type} x${item.count}</div>`;
-                    });
-                }
-            }
-
-            updateNPCList() {
-                const list = document.getElementById('npcList');
-                list.innerHTML = '';
-                this.world.npcs.forEach((npc, i) => {
-                    list.innerHTML += `<div class="object-item">🤖 ${npc.name}</div>`;
-                });
-            }
-
-            logWorld(message) {
-                const log = document.getElementById('worldLog');
-                const entry = document.createElement('div');
-                entry.className = 'log-entry';
-                entry.textContent = `> ${message}`;
-                log.appendChild(entry);
-                log.scrollTop = log.scrollHeight;
-                if (log.children.length > 10) {
-                    log.removeChild(log.firstChild);
-                }
+                await run();
             }
         }
 
-        // ==================== GAME ENTITIES ====================
-
-        class Player {
-            constructor(x, y, world) {
-                this.x = x;
-                this.y = y;
-                this.width = 30;
-                this.height = 40;
-                this.world = world;
-
-                this.vx = 0;
-                this.vy = 0;
-                this.speed = 200;
-                this.sprintSpeed = 350;
-
-                this.health = 100;
-                this.maxHealth = 100;
-                this.coins = 0;
-
-                this.inventory = [];
-                this.state = 'idle'; // idle, walk, run
+        function stop() {
+            running = false;
+            if (timer) {
+                clearTimeout(timer);
+                timer = null;
             }
-
-            update(input, dt) {
-                let dirX = 0, dirY = 0;
-
-                if (input.keys['w'] || input.keys['arrowup']) dirY = -1;
-                if (input.keys['s'] || input.keys['arrowdown']) dirY = 1;
-                if (input.keys['a'] || input.keys['arrowleft']) dirX = -1;
-                if (input.keys['d'] || input.keys['arrowright']) dirX = 1;
-
-                const isSprinting = input.keys['shift'];
-                const currentSpeed = isSprinting ? this.sprintSpeed : this.speed;
-
-                if (dirX !== 0 || dirY !== 0) {
-                    const len = Math.sqrt(dirX * dirX + dirY * dirY);
-                    this.vx = (dirX / len) * currentSpeed;
-                    this.vy = (dirY / len) * currentSpeed;
-                    this.state = isSprinting ? 'run' : 'walk';
-                } else {
-                    this.vx = 0;
-                    this.vy = 0;
-                    this.state = 'idle';
-                }
-
-                this.x += this.vx * dt;
-                this.y += this.vy * dt;
-
-                // World boundaries
-                this.x = Math.max(0, Math.min(this.x, this.world.width - this.width));
-                this.y = Math.max(0, Math.min(this.y, this.world.height - this.height));
-
-                // Collect items
-                this.world.objects = this.world.objects.filter(obj => {
-                    if (this.intersects(obj)) {
-                        if (obj.type === 'coin') {
-                            this.coins += 10;
-                        } else if (obj.type === 'chest') {
-                            this.addInventory(obj.type);
-                        }
-                        return false;
-                    }
-                    return true;
-                });
-            }
-
-            addInventory(itemType) {
-                const existing = this.inventory.find(i => i.type === itemType);
-                if (existing) {
-                    existing.count++;
-                } else {
-                    this.inventory.push({ type: itemType, count: 1 });
-                }
-            }
-
-            intersects(obj) {
-                return this.x < obj.x + obj.width &&
-                       this.x + this.width > obj.x &&
-                       this.y < obj.y + obj.height &&
-                       this.y + this.height > obj.y;
-            }
-
-            render(ctx) {
-                // Body
-                ctx.fillStyle = '#ff6b9d';
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-
-                // Head
-                ctx.fillStyle = '#ffdbac';
-                ctx.fillRect(this.x + 5, this.y - 10, 20, 15);
-
-                // Eyes
-                ctx.fillStyle = '#000';
-                ctx.fillRect(this.x + 10, this.y - 7, 4, 4);
-                ctx.fillRect(this.x + 18, this.y - 7, 4, 4);
-
-                // State indicator
-                ctx.fillStyle = this.state === 'run' ? '#ffff00' : this.state === 'walk' ? '#00ff00' : '#aaa';
-                ctx.fillRect(this.x - 5, this.y - 5, 4, 4);
-
-                if (this.health < this.maxHealth) {
-                    // Health bar
-                    ctx.strokeStyle = '#000';
-                    ctx.lineWidth = 1;
-                    ctx.strokeRect(this.x, this.y - 20, this.width, 4);
-                    ctx.fillStyle = '#ff6b6b';
-                    ctx.fillRect(this.x, this.y - 20, (this.health / this.maxHealth) * this.width, 4);
-                }
-            }
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            log('⏸️ Notapatapahina', 'info');
         }
-
-        class WorldObject {
-            constructor(x, y, type, world) {
-                this.x = x;
-                this.y = y;
-                this.type = type;
-                this.world = world;
-
-                const sizes = {
-                    tree: { w: 40, h: 60 },
-                    rock: { w: 30, h: 30 },
-                    house: { w: 80, h: 80 },
-                    water: { w: 60, h: 60 },
-                    chest: { w: 40, h: 40 },
-                    coin: { w: 15, h: 15 }
-                };
-
-                const size = sizes[type] || { w: 30, h: 30 };
-                this.width = size.w;
-                this.height = size.h;
-
-                this.interactive = ['chest', 'coin'].includes(type);
-            }
-
-            render(ctx) {
-                switch (this.type) {
-                    case 'tree':
-                        ctx.fillStyle = '#228B22';
-                        ctx.fillRect(this.x, this.y, this.width, this.height);
-                        ctx.fillStyle = '#654321';
-                        ctx.fillRect(this.x + 15, this.y + 40, 10, 20);
-                        break;
-
-                    case 'rock':
-                        ctx.fillStyle = '#808080';
-                        ctx.fillRect(this.x, this.y, this.width, this.height);
-                        ctx.fillStyle = '#606060';
-                        ctx.fillRect(this.x + 5, this.y + 5, this.width - 10, this.height - 10);
-                        break;
-
-                    case 'house':
-                        ctx.fillStyle = '#8B4513';
-                        ctx.fillRect(this.x, this.y, this.width, this.height);
-                        ctx.fillStyle = '#D2691E';
-                        ctx.fillRect(this.x + 10, this.y + 10, 30, 30);
-                        ctx.fillStyle = '#FFD700';
-                        ctx.fillRect(this.x + 15, this.y + 15, 10, 10);
-                        ctx.fillRect(this.x + 30, this.y + 15, 10, 10);
-                        break;
-
-                    case 'water':
-                        ctx.fillStyle = '#1E90FF';
-                        ctx.fillRect(this.x, this.y, this.width, this.height);
-                        ctx.strokeStyle = '#00BFFF';
-                        ctx.lineWidth = 2;
-                        ctx.strokeRect(this.x + 5, this.y + 5, this.width - 10, this.height - 10);
-                        break;
-
-                    case 'chest':
-                        ctx.fillStyle = '#CD853F';
-                        ctx.fillRect(this.x, this.y, this.width, this.height);
-                        ctx.fillStyle = '#FFD700';
-                        ctx.fillRect(this.x + 5, this.y + 5, this.width - 10, this.height - 10);
-                        break;
-
-                    case 'coin':
-                        ctx.fillStyle = '#FFD700';
-                        ctx.beginPath();
-                        ctx.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
-                        ctx.fill();
-                        ctx.fillStyle = '#FFA500';
-                        ctx.fillText('$', this.x + 3, this.y + 12);
-                        break;
-                }
-            }
-        }
-
-        class NPC {
-            constructor(x, y, name, dialog, behavior) {
-                this.x = x;
-                this.y = y;
-                this.width = 25;
-                this.height = 35;
-                this.name = name;
-                this.dialog = dialog;
-                this.behavior = behavior;
-
-                this.vx = 0;
-                this.vy = 0;
-                this.speed = 80;
-                this.patrolDir = Math.random() > 0.5 ? 1 : -1;
-            }
-
-            update(player, dt) {
-                if (this.behavior === 'patrol') {
-                    this.x += this.patrolDir * this.speed * dt;
-                    if (Math.random() < 0.01) {
-                        this.patrolDir *= -1;
-                    }
-                } else if (this.behavior === 'follow') {
-                    const dx = player.x - this.x;
-                    const dy = player.y - this.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist > 0) {
-                        this.x += (dx / dist) * this.speed * dt;
-                        this.y += (dy / dist) * this.speed * dt;
-                    }
-                }
-            }
-
-            render(ctx) {
-                // Body
-                ctx.fillStyle = '#4169E1';
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-
-                // Head
-                ctx.fillStyle = '#FDBCB4';
-                ctx.beginPath();
-                ctx.arc(this.x + this.width / 2, this.y - 8, 8, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Name label
-                ctx.fillStyle = '#fff';
-                ctx.font = '10px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText(this.name, this.x + this.width / 2, this.y - 20);
-            }
-        }
-
-        class Chunk {
-            constructor(x, y, size) {
-                this.x = x;
-                this.y = y;
-                this.size = size;
-            }
-        }
-
-        // ==================== UI FUNCTIONS ====================
-
-        let engine;
-
-        function updateObjectProperties() {
-            const type = document.getElementById('objectType').value;
-            const props = document.getElementById('objectProps');
-            props.innerHTML = '';
-        }
-
-        function switchTab(index) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(`tab${index}`).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        // ==================== INITIALIZATION ====================
-
-        window.addEventListener('load', () => {
-            engine = new GameEngine();
-            engine.logWorld('Engine started - Ready to build your world!');
-        });
-
-        window.addEventListener('resize', () => {
-            engine.canvas.width = window.innerWidth - 250;
-            engine.canvas.height = window.innerHeight;
-        });
     </script>
 </body>
 </html>
