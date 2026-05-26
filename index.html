@@ -45,7 +45,7 @@
             color: #1c1e21;
             font-size: 14px;
         }
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 10px 14px;
             border: 2px solid #dddfe2;
@@ -54,8 +54,13 @@
             transition: border-color 0.2s;
             outline: none;
         }
-        input:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             border-color: #1877f2;
+        }
+        textarea {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 12px;
+            resize: vertical;
         }
         .btn {
             padding: 12px;
@@ -136,12 +141,24 @@
             border-radius: 4px;
             font-size: 12px;
         }
+        .proxy-status {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            background: #e7f3ff;
+        }
+        .proxy-status select {
+            margin-top: 5px;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>👍 Auto Like Facebook</h1>
-        <p class="subtitle">Mampiasa Proxy mba handefasana any amin'ny Facebook</p>
+        <p class="subtitle">Mampiasa CORS Proxy handefasana any amin'ny Facebook</p>
 
         <div class="form-group">
             <label>🔑 Token (fb_dtsg)</label>
@@ -150,12 +167,12 @@
 
         <div class="form-group">
             <label>🍪 Cookies (jereo ny torolàlana etsy ambany)</label>
-            <textarea id="cookiesInput" rows="3" placeholder="Apetraho eto ny cookies rehetra (jereo ny torolàlana)" style="width:100%;padding:10px;border:2px solid #dddfe2;border-radius:8px;font-size:13px;font-family:monospace;resize:vertical;"></textarea>
+            <textarea id="cookiesInput" rows="3" placeholder="Apetraho eto ny cookies rehetra"></textarea>
         </div>
 
         <div class="form-group">
             <label>📝 Post ID na URL</label>
-            <input type="text" id="postInput" placeholder="Ohatra: 100078998814064_123456789">
+            <input type="text" id="postInput" placeholder="Ohatra: 100078998814064_123456789 na fbid=123456789">
         </div>
 
         <div class="form-group">
@@ -170,13 +187,23 @@
             <div style="display:flex;gap:10px;">
                 <div class="form-group" style="flex:1;">
                     <label>Isan'ny like</label>
-                    <input type="number" id="likeCount" value="10" min="1" max="50">
+                    <input type="number" id="likeCount" value="5" min="1" max="30">
                 </div>
                 <div class="form-group" style="flex:1;">
                     <label>Interval (segondra)</label>
-                    <input type="number" id="interval" value="5" min="3" max="60">
+                    <input type="number" id="interval" value="8" min="3" max="120">
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
+            <label>🌐 Proxy (fidio raha tsy mandeha ny iray)</label>
+            <select id="proxySelect">
+                <option value="https://api.allorigins.win/raw?url=">allorigins.win (default)</option>
+                <option value="https://corsproxy.io/?">corsproxy.io</option>
+                <option value="https://api.codetabs.com/v1/proxy?quest=">codetabs.com</option>
+                <option value="https://cors-anywhere.herokuapp.com/">cors-anywhere (heroku)</option>
+            </select>
         </div>
 
         <div class="controls">
@@ -197,31 +224,31 @@
         <div class="instructions">
             <strong>📖 Torolàlana feno</strong>
             <ol>
-                <li><strong>Midira ao amin'ny Facebook</strong> amin'ny navigateur (Chrome, Firefox, Edge)</li>
+                <li><strong>Midira ao amin'ny Facebook</strong> amin'ny navigateur (Chrome, Firefox)</li>
                 <li><strong>Mankanesa any amin'ny pejy misy ilay post</strong> tianao haseho like</li>
                 <li><strong>Kitiho F12</strong> → mankanesa any amin'ny <strong>Console</strong></li>
                 <li>Adikao sy apetraho ao amin'ny Console ity code ity:
                     <pre style="background:#f0f0f0;padding:8px;border-radius:4px;margin-top:5px;font-size:11px;overflow-x:auto;">
 // Maka ny fb_dtsg
-var dtsg = document.querySelector('[name="fb_dtsg"]')?.value;
-if (!dtsg) {
+var fbDtsg = document.querySelector('[name="fb_dtsg"]')?.value;
+if (!fbDtsg) {
     var m = document.documentElement.innerHTML.match(/["']fb_dtsg["'][\s:=]+["']([^"']+)["']/);
-    if (m) dtsg = m[1];
+    if (m) fbDtsg = m[1];
 }
-console.log('fb_dtsg:', dtsg);
+console.log('%c fb_dtsg: ' + fbDtsg, 'background:#1877f2;color:white;padding:2px 8px;border-radius:4px;');
 
 // Maka ny cookies
-console.log('Cookies:', document.cookie);
+console.log('%c Cookies:', 'background:#e6a817;color:black;padding:2px 8px;border-radius:4px;');
+console.log(document.cookie Adrian);
 
-// Asehoy ao amin'ny alert
-alert('fb_dtsg: ' + dtsg + '\n\nCookies hita ao amin\'ny Console');
-                    </pre>
+alert('✅ fb_dtsg: ' + fbDtsg + '\n\n✅ Cookies hita ao amin\'ny Console\nAdikao izy roa eto amin\'ny pejy.');
+                        </pre>
                 </li>
                 <li>Adikao eto ny <strong>fb_dtsg</strong> sy ny <strong>Cookies</strong></li>
                 <li>Apetraho ny <strong>Post ID</strong> na ny URL</li>
+                <li>Raha tsy mandeha, <strong>ovao ny Proxy</strong> amin'ny safidy etsy ambany</li>
                 <li>Tsindrio <strong>Atombohy</strong></li>
             </ol>
-            <p style="margin-top:10px;color:#e41e3f;"><strong>⚠️ Zava-dehibe:</strong> Raha tsy mandeha ny proxy, azonao atao ny misolo proxy hafa ao amin'ny code (jereo ny <code>PROXY_URL</code> ao amin'ny JavaScript).</p>
         </div>
     </div>
 
@@ -232,15 +259,13 @@ alert('fb_dtsg: ' + dtsg + '\n\nCookies hita ao amin\'ny Console');
         let success = 0;
         let errors = 0;
 
-        // CORS Proxy
-        // Afaka misolo proxy hafa eto ianao raha tsy mandeha ity
-        const PROXY_URL = 'https://api.allorigins.win/raw?url=';
-        // const PROXY_URL = 'https://corsproxy.io/?';
-        // const PROXY_URL = 'https://api.codetabs.com/v1/proxy?quest=';
-
         document.getElementById('mode').addEventListener('change', function() {
             document.getElementById('autoOptions').classList.toggle('hidden', this.value !== 'auto');
         });
+
+        function getProxyUrl() {
+            return document.getElementById('proxySelect').value;
+        }
 
         function log(msg, type = 'info') {
             const logEl = document.getElementById('log');
@@ -283,9 +308,14 @@ alert('fb_dtsg: ' + dtsg + '\n\nCookies hita ao amin\'ny Console');
             return match ? match[1] : null;
         }
 
-        function parseCookies(cookieStr) {
-            // Manadio ny cookies
-            return cookieStr.trim();
+        async function testProxy(proxyUrl) {
+            try {
+                const testUrl = proxyUrl + encodeURIComponent('https://www.facebook.com');
+                const res = await fetch(testUrl, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
+                return res.ok;
+            } catch {
+                return false;
+            }
         }
 
         async function sendLike(fbDtsg, cookies, postId) {
@@ -302,27 +332,31 @@ alert('fb_dtsg: ' + dtsg + '\n\nCookies hita ao amin\'ny Console');
             }
 
             // Mamorona ny form data
+            const clientMutationId = Math.random().toString(36).substring(2, 15);
+            const variables = JSON.stringify({
+                input: {
+                    story_id: finalPostId,
+                    actor_id: userId,
+                    client_mutation_id: clientMutationId
+                }
+            });
+
             const formData = new URLSearchParams();
             formData.append('fb_dtsg', fbDtsg);
             formData.append('fb_api_caller_class', 'RelayModern');
             formData.append('fb_api_req_friendly_name', 'UFI2LikeStoryMutation');
-            formData.append('variables', JSON.stringify({
-                input: {
-                    story_id: finalPostId,
-                    actor_id: userId,
-                    client_mutation_id: Math.random().toString(36).substring(2, 15)
-                }
-            }));
+            formData.append('variables', variables);
             formData.append('server_timestamps', 'true');
             formData.append('doc_id', '4745183335119665');
 
+            const proxyUrl = getProxyUrl();
             const fbUrl = 'https://www.facebook.com/web_graphql/';
-            const proxyUrl = PROXY_URL + encodeURIComponent(fbUrl);
+            const fullUrl = proxyUrl + encodeURIComponent(fbUrl);
 
-            log(`📤 Mandefa like ho an'ny: ${finalPostId} (amin'ny alalan'ny proxy)`, 'info');
+            log(`📤 Mandefa like ho an'ny: ${finalPostId} (proxy: ${proxyUrl.substring(0, 30)}...)`, 'info');
 
             try {
-                const res = await fetch(proxyUrl, {
+                const res = await fetch(fullUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -332,21 +366,29 @@ alert('fb_dtsg: ' + dtsg + '\n\nCookies hita ao amin\'ny Console');
                 });
 
                 const text = await res.text();
+
+                // Raha 404 ny valiny
+                if (res.status === 404) {
+                    return { success: false, error: 'HTTP 404 — Mety tsy mandeha ny proxy na lany daty ny doc_id', code: 404 };
+                }
+
                 let data;
                 try {
                     data = JSON.parse(text);
                 } catch (e) {
-                    // Mety mila manandrana proxy hafa
-                    log(`⚠️ Tsy JSON ny valiny. Santo: ${text.substring(0, 150)}`, 'warn');
-                    return { success: false, error: 'Tsy JSON ny valiny. Mety tsy mandeha ny proxy.' };
+                    log(`⚠️ Tsy JSON ny valiny (status ${res.status}). Andramo proxy hafa.`, 'warn');
+                    log(`📄 Santo: ${text.substring(0, 200)}`, 'warn');
+                    return { success: false, error: `Tsy JSON (status ${res.status}). Mety tsy mandeha ny proxy.`, code: res.status };
                 }
 
+                // Jereo ny valiny
                 if (data.data?.story?.reactors?.count !== undefined) {
                     return { success: true, data };
-                } else if (data.errors) {
-                    return { success: false, error: data.errors[0]?.message || 'Unknown error', code: data.errors[0]?.code };
+                } else if (data.errors && data.errors.length > 0) {
+                    const err = data.errors[0];
+                    return { success: false, error: err.message || 'Unknown error', code: err.code || 0 };
                 } else {
-                    return { success: false, error: JSON.stringify(data).substring(0, 200) };
+                    return { success: false, error: JSON.stringify(data).substring(0, 200), code: 0 };
                 }
             } catch (err) {
                 return { success: false, error: err.message, code: 0 };
@@ -356,9 +398,10 @@ alert('fb_dtsg: ' + dtsg + '\n\nCookies hita ao amin\'ny Console');
         async function start() {
             if (running) return;
 
+            // FIX: postInput no ID marina, tsy postId
             const fbDtsg = document.getElementById('fbDtsg').value.trim();
             const cookies = document.getElementById('cookiesInput').value.trim();
-            const postInput = document.getElementById('postId').value.trim();
+            const postInput = document.getElementById('postInput').value.trim();
             const mode = document.getElementById('mode').value;
 
             // Validation
@@ -378,12 +421,13 @@ alert('fb_dtsg: ' + dtsg + '\n\nCookies hita ao amin\'ny Console');
             const userId = extractUserId(cookies);
             if (!userId) {
                 log('❌ Tsy hita ny User ID (c_user) ao amin\'ny cookies', 'error');
+                log('💡 Ataovy azo antoka fa naka cookies feno ianao — mila misy "c_user=123456789"', 'warn');
                 return;
             }
 
             const postId = extractPostId(postInput, userId);
             if (!postId) {
-                log('❌ Tsy hita ny Post ID', 'error');
+                log('❌ Tsy hita ny Post ID. Endrika: 12345_67890 na fbid=123456789 na isa fotsiny', 'error');
                 return;
             }
 
@@ -395,6 +439,7 @@ alert('fb_dtsg: ' + dtsg + '\n\nCookies hita ao amin\'ny Console');
             document.getElementById('stopBtn').disabled = false;
 
             if (mode === 'once') {
+                log('📤 Mandefa like iray...', 'info');
                 const result = await sendLike(fbDtsg, cookies, postId);
                 sent++;
                 document.getElementById('sentCount').textContent = sent;
@@ -407,11 +452,18 @@ alert('fb_dtsg: ' + dtsg + '\n\nCookies hita ao amin\'ny Console');
                     errors++;
                     document.getElementById('errorCount').textContent = errors;
                     log(`❌ Tsy nahomby: ${result.error}`, 'error');
+
+                    // Torohevitra
+                    if (result.code === 404) {
+                        log('💡 Andramo ovay ny proxy (jereo ny safidy etsy ambany)', 'warn');
+                    } else if (result.code === 1351003) {
+                        log('💡 Mety mila doc_id vaovao. Vao mainka lany daty.', 'warn');
+                    }
                 }
                 stop();
             } else {
-                const maxCount = parseInt(document.getElementById('likeCount').value) || 10;
-                const intervalSec = parseInt(document.getElementById('interval').value) || 5;
+                const maxCount = parseInt(document.getElementById('likeCount').value) || 5;
+                const intervalSec = parseInt(document.getElementById('interval').value) || 8;
                 const intervalMs = intervalSec * 1000;
 
                 log(`▶️ Auto-like natomboka — ${maxCount} like, isaky ny ${intervalSec}s`, 'info');
@@ -419,7 +471,7 @@ alert('fb_dtsg: ' + dtsg + '\n\nCookies hita ao amin\'ny Console');
                 const run = async () => {
                     if (!running || sent >= maxCount) {
                         stop();
-                        if (sent >= maxCount) log('✅ Vita!', 'success');
+                        if (sent >= maxCount) log('✅ Vita ny like rehetra!', 'success');
                         return;
                     }
 
